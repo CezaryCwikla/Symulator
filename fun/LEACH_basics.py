@@ -7,8 +7,8 @@ class Model:
         self.n = n
 
         # Rozmiary obszaru
-        self.x = 1000
-        self.y = 1000
+        self.x = 100
+        self.y = 100
 
         # Pozycja stacji bazowej
         self.stacja_x = self.x * 0.5
@@ -29,6 +29,7 @@ class Model:
 
         # Rodzaje wzmacniaczy transmisji
         self.Efs = 10e-12
+
         self.Emp = 0.0013 * 0.000000000001
 
         # Energia utracona w wyniku agregacji danych
@@ -39,7 +40,7 @@ class Model:
 
         ######################## PARAMETRY SYMULACJI #############################
         # maksymalna liczba rund
-        self.rmax = 200
+        self.rmax = 2000
 
         # Rozmiar pakietu danych
         self.data_packet_len = 4000
@@ -48,7 +49,7 @@ class Model:
         self.hello_packet_len = 100
 
         # Liczba pakietów wysłanych w fazie stanu ustalonego
-        self.NumPacket = 10
+        self.NumPacket = 100
 
         # Zasieg radiowy
         self.RR = 0.5 * self.x * math.sqrt(2)

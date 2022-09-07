@@ -31,9 +31,9 @@ def get_min_and_id_of_ch(model: Model, TotalCH, distance: list):
 
 
 def start(Sensors: list [Sensor], model: Model, TotalCH):
-    print('# ##############################################################')
-    print('# ############# Węzły dołączają do najbliższego CH #############')
-    print('# ##############################################################')
+    # print('# ##############################################################')
+    # print('# ############# Węzły dołączają do najbliższego CH #############')
+    # print('# ##############################################################')
 
     total_nodes = model.n
     number_of_ch = len(TotalCH)
@@ -47,29 +47,29 @@ def start(Sensors: list [Sensor], model: Model, TotalCH):
                     pow(Sensors[i].xd - Sensors[TotalCH[j]].xd, 2) + pow(Sensors[i].yd - Sensors[TotalCH[j]].yd, 2)
                 )
 
-        print("printing Distance array:")
-        for x in distance:
-            print(x)
-        print()
+        # print("printing Distance array:")
+        # for x in distance:
+        #     print(x)
+        # print()
 
     # co poniżej robi to:
     # Zapisaliśmy wszystkie CH jako wiersz i wzięliśmy odległość między każdym CH a wszystkimi węzłami w jego kolumnach
     # to przyjmuje minimalną wartość każdej kolumny, tj. min dist dla każdego węzła i ta dist to dist to CH
 
         min_dist_from_all_ch, id_of_min_dist_ch = get_min_and_id_of_ch(model, TotalCH, distance)
-        print("min_dist_from_all_ch")
-        print(min_dist_from_all_ch)
-        print('id_of_min_dist_ch')
-        print(id_of_min_dist_ch)
+        # print("min_dist_from_all_ch")
+        # print(min_dist_from_all_ch)
+        # print('id_of_min_dist_ch')
+        # print(id_of_min_dist_ch)
 
         for i, sensor in enumerate(Sensors[:-1]):
             if sensor.E > 0:
                 # jeśli węzeł znajduje się w RR CH i jest bliżej CH niż Stacja
                 if min_dist_from_all_ch[i] <= model.RR and min_dist_from_all_ch[i] < sensor.dis2sb:
-                    print(f'{sensor.id} dołącza do {TotalCH[id_of_min_dist_ch[i]]}')
+                    # print(f'{sensor.id} dołącza do {TotalCH[id_of_min_dist_ch[i]]}')
                     sensor.MCH = TotalCH[id_of_min_dist_ch[i]]
                     sensor.dis2ch = min_dist_from_all_ch[i]
                 else:
-                    print(f'{sensor.id} dolacza do STACJI BAZOWEJ')
+                    # print(f'{sensor.id} dolacza do STACJI BAZOWEJ')
                     sensor.MCH = total_nodes
                     sensor.dis2ch = sensor.dis2sb

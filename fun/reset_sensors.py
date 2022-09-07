@@ -4,7 +4,7 @@ from LEACH_basics import Sensor, Model
 
 def start(Sensors: list[Sensor], model: Model, round_number):
     for sensor in Sensors[:-1]:
-        print(f"\nresetting {sensor.id}")
+        # print(f"\nresetting {sensor.id}")
 
         # Ustawienia by węzły znowu mogły zostać głową klastra
         # Po każdej rundzie AroundClear, każdy węzeł może być głową klastra

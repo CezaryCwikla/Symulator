@@ -33,5 +33,5 @@ def start(sensors: list[Sensor],model: Model, sender, sender_rr):
 
         if distance[i] <= sender_rr and sender != sensor.id:
             receiver.append(sensor.id)
-            print(f"{sender} ma odbiorcę: {sensor.id}")
+            # print(f"{sender} ma odbiorcę: {sensor.id}")
     return receiver

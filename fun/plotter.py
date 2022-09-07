@@ -16,7 +16,6 @@ def start(Sensors: [Sensor], myModel: Model, round_number):
     fig, axis = plt.subplots()
     axis.set_xlim(left=0, right=myModel.x)
     axis.set_ylim(bottom=0, top=myModel.y)
-    plt.ion()
     deadNum = 0
     n_flag = True
     c_flag = True
@@ -29,10 +28,12 @@ def start(Sensors: [Sensor], myModel: Model, round_number):
                 axis.plot(xl, yl)
                 if n_flag:
                     axis.scatter([sensor.xd], [sensor.yd], c='k', edgecolors='k', label='Nodes')
+                    axis.text(sensor.xd, sensor.yd, round(sensor.E,3))
                     n_flag = False
                 else:
                     axis.scatter([sensor.xd], [sensor.yd], c='k', edgecolors='k')
             #       plot(Sensors(i).xd, Sensors(i).yd, 'ko', 'MarkerSize', 5, 'MarkerFaceColor', 'k');
+                    axis.text(sensor.xd, sensor.yd, round(sensor.E,3))
             #             pass  # todo: Plot here
 
             elif sensor.type == 'C':  # Sensors.type == 'C'
@@ -58,5 +59,5 @@ def start(Sensors: [Sensor], myModel: Model, round_number):
     plt.xlabel('X [m]')
     plt.ylabel('Y [m]')
     plt.legend(loc='upper right')
-    plt.show(block=False)
+    plt.show()
 

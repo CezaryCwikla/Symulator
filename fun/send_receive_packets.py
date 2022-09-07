@@ -39,10 +39,10 @@ def start(sensors: list[Sensor], model: Model, senders: list, receivers: list, s
             #print(f'odległość pomiędzy {sender}  i  {receiver} wynosi: {distance}')
 
             if distance > model.do:
-                sensors[sender].E -= model.ETX * PacketSize * model.Emp * PacketSize * pow(distance, 4)
+                sensors[sender].E -= (model.ETX * PacketSize) + model.Emp * PacketSize * pow(distance, 4)
                 sent_packets = send_rec(sensors, sender, sent_packets)
             else:
-                sensors[sender].E -= model.ETX * PacketSize * model.Emp * PacketSize * pow(distance,
+                sensors[sender].E -= (model.ETX * PacketSize) + model.Efs * PacketSize * pow(distance,
                                                                                            2)  # różnica jest potęgi do 2 i do 4
                 sent_packets = send_rec(sensors, sender, sent_packets)
 

@@ -25,7 +25,7 @@ def zeros(row, column):
 
 class LEACHSimulation:
 
-    def __init__(self, n=200):
+    def __init__(self, n=100):
         self.n = n                  # Przypisz liczbę węzłów
 
         # ###################################################################
@@ -185,14 +185,14 @@ class LEACHSimulation:
         for round_number in range(1, self.model.rmax +1):
             self.r = round_number
 
-            print('#####################################')
-            print(f'############# Rounda {round_number} #############')
-            print('#####################################')
-
-            print('####################################################')
-            print('############# Inicjalizacja głównej pętli ##########')
-            print('####################################################')
-            print()
+            # print('#####################################')
+            # print(f'############# Rounda {round_number} #############')
+            # print('#####################################')
+            #
+            # print('####################################################')
+            # print('############# Inicjalizacja głównej pętli ##########')
+            # print('####################################################')
+            # print()
 
             self.srp, self.rrp, self.sdp, self.rdp = reset_sensors.start(self.Sensors, self.model, round_number)
 
@@ -200,7 +200,7 @@ class LEACHSimulation:
             # ########################################
             # ############# plot Sensors??? #############
             # ########################################
-            #plotter.start(self.Sensors, self.model, round_number)
+
 
             # #################################################
             # ############# wybór głowy klastra #############
@@ -211,7 +211,7 @@ class LEACHSimulation:
             # ######################################################################
             # ############# Plot network status in end of set-up phase #############
             # ######################################################################
-            # Todo: Plot
+            plotter.start(self.Sensors, self.model, round_number)
 
             # #################################################
             # ############# faza stanu ustalonego #############
@@ -224,10 +224,10 @@ class LEACHSimulation:
 
 
     def __cluster_head_selection_phase(self, round_number):
-        print('#################################################')
-        print('############# Wybór głowy węzła #############')
-        print('#################################################')
-        print()
+        # print('#################################################')
+        # print('############# Wybór głowy węzła #############')
+        # print('#################################################')
+        # print()
         # Wybór Głowy Klastra  na podstawie fazy konfiguracji LEACH
         # self.list_CH przechowuje identyfikatory wszystkich CH w bieżącej rundzie
         self.list_CH = LEACH_select_ch.start(self.Sensors, self.model, round_number)
@@ -240,125 +240,125 @@ class LEACHSimulation:
 
         join_to_nearest_ch.start(self.Sensors, self.model, self.list_CH)
 
-        print("CH: ", self.list_CH)
-        print("\nSensors:")
+        # print("CH: ", self.list_CH)
+        # print("\nSensors:")
 
         # ########################################
         # ############# wykres dla wezłow #############
         # ########################################
         # Todo: wykres tu jeszcze trzeba
-        plotter.start(self.Sensors, self.model, round_number)
+        #plotter.start(self.Sensors, self.model, round_number)
         # todo TUTAJ JESZCZE DOKONCZYC FUNKCJE!!!!
 
-        print('##################################################################')
-        print('############# koniec fazy klastrowania, konfiguracji #############')
-        print('##################################################################')
+        # print('##################################################################')
+        # print('############# koniec fazy klastrowania, konfiguracji #############')
+        # print('##################################################################')
 
 
     def __broadcast_cluster_head(self):
-        print('#########################################################################################')
-        print('############# Rozgłaszanie do wszystkich węzłów, które są w zasięgu #####################')
-        print('#########################################################################################')
-        print()
+        # print('#########################################################################################')
+        # print('############# Rozgłaszanie do wszystkich węzłów, które są w zasięgu #####################')
+        # print('#########################################################################################')
+        # print()
 
         # Nadawanie CH x do wszystkich czujników, które znajdują się w wściekłości radiowej x. (nie transmituj do zlewu)
         # Robi to dla wszystkich CH
         for ch_id in self.list_CH:
-            print(f'for cluster head: {ch_id}')
+            # print(f'for cluster head: {ch_id}')
             self.receivers: list = findReceiver.start(self.Sensors, self.model, sender=ch_id,
                                                       sender_rr=self.Sensors[ch_id].RR)
 
             # todo: test
-            print("\n sender (lub CH): ", ch_id)
-            print('self.Receivers: ', end='')
-            print(self.receivers)
+            # print("\n sender (lub CH): ", ch_id)
+            # print('self.Receivers: ', end='')
+            # print(self.receivers)
 
 
             self.srp, self.rrp, self.sdp, self.rdp = send_receive_packets.start(
                 self.Sensors, self.model, [ch_id], self.receivers, self.srp, self.rrp, self.sdp, self.rdp,
                 packet_type='Hello'
             )
-        print("self.srp", self.srp)
-        print("self.rrp", self.rrp)
-        print("self.sdp", self.sdp)
-        print("self.rdp", self.rdp)
-        print("Sensors: ", )
+        # print("self.srp", self.srp)
+        # print("self.rrp", self.rrp)
+        # print("self.sdp", self.sdp)
+        # print("self.rdp", self.rdp)
+        # print("Sensors: ", )
 
 
     def __steady_state_phase(self):
-        print('#################################################')
-        print('############# faza stanu ustalonego #############')
-        print('#################################################')
-        print()
+        # print('#################################################')
+        # print('############# faza stanu ustalonego #############')
+        # print('#################################################')
+        # print()
         for i in range(self.model.NumPacket):  # liczba pakietow w danej rundzie
 
             # ########################################
             # ############# plot Sensors #############
             # ########################################
             # todo: Plot here
-            print('##################################################################')
-            print('############# wszystkie czujniki wysylaja dane do CH #############')
-            print('##################################################################')
-            print()
+            # print('##################################################################')
+            # print('############# wszystkie czujniki wysylaja dane do CH #############')
+            # print('##################################################################')
+            # print()
 
             for receiver in self.list_CH:
                 sender = findSender.start(self.Sensors, receiver)
 
-                print("sender: ", sender)
-                print("receiver: ", receiver)
-                print()
+                # print("sender: ", sender)
+                # print("receiver: ", receiver)
+                # print()
 
                 self.srp, self.rrp, self.sdp, self.rdp = send_receive_packets.start(
                     self.Sensors, self.model, sender, [receiver], self.srp, self.rrp, self.sdp, self.rdp,
                     packet_type='Data'
                 )
 
-                print("self.srp", self.srp)
-                print("self.rrp", self.rrp)
-                print("self.sdp", self.sdp)
-                print("self.rdp", self.rdp)
-                print("Sensors: ", )
+                # print("self.srp", self.srp)
+                # print("self.rrp", self.rrp)
+                # print("self.sdp", self.sdp)
+                # print("self.rdp", self.rdp)
+                # print("Sensors: ", )
+            #plotter.start(self.Sensors, self.model, round_number)
+        # print(
+        #     "################################################################")
+        # print(
+        #     "wyślij pakiet danych bezpośrednio z węzłów (nie znajdują się w żadnym klastrze) do Stacji #############")
+        # print(
+        #     "################################################################")
+            for sender in self.Sensors:
+                # if the node has sink as its CH but it's not sink itself and the node is not dead
+                if sender.MCH == self.n and sender.id != self.n and sender.E > 0:
+                    self.receivers = [self.n]
+                    sender = [sender.id]
 
-        print(
-            "################################################################")
-        print(
-            "wyślij pakiet danych bezpośrednio z węzłów (nie znajdują się w żadnym klastrze) do Stacji #############")
-        print(
-            "################################################################")
-        for sender in self.Sensors:
-            # if the node has sink as its CH but it's not sink itself and the node is not dead
-            if sender.MCH == self.n and sender.id != self.n and sender.E > 0:
+                    # print(f'wezel {sender} przesle prosto do stacji bazowej')
+
+                    self.srp, self.rrp, self.sdp, self.rdp = send_receive_packets.start(
+                        self.Sensors, self.model, sender, self.receivers, self.srp, self.rrp, self.sdp, self.rdp,
+                        packet_type='Data'
+                    )
+
+        # print('###################################################################################')
+        # print('############# Po agregacji danych wyslij dane z CH do Stacji Bazowej ##############')
+        # print('###################################################################################')
+        # print()
+        # print('wysyłający (lub CH) = ', self.list_CH)
+
+            for sender in self.list_CH:
                 self.receivers = [self.n]
-                sender = [sender.id]
 
-                print(f'wezel {sender} przesle prosto do stacji bazowej')
+                # print("wysylajacy: ", sender)
+                # print("odbierajacy: ", self.receivers)
 
                 self.srp, self.rrp, self.sdp, self.rdp = send_receive_packets.start(
-                    self.Sensors, self.model, sender, self.receivers, self.srp, self.rrp, self.sdp, self.rdp,
+                    self.Sensors, self.model, [sender], self.receivers, self.srp, self.rrp, self.sdp, self.rdp,
                     packet_type='Data'
                 )
-
-        print('###################################################################################')
-        print('############# Po agregacji danych wyslij dane z CH do Stacji Bazowej ##############')
-        print('###################################################################################')
-        print()
-        print('wysyłający (lub CH) = ', self.list_CH)
-
-        for sender in self.list_CH:
-            self.receivers = [self.n]
-
-            print("wysylajacy: ", sender)
-            print("odbierajacy: ", self.receivers)
-
-            self.srp, self.rrp, self.sdp, self.rdp = send_receive_packets.start(
-                self.Sensors, self.model, [sender], self.receivers, self.srp, self.rrp, self.sdp, self.rdp,
-                packet_type='Data'
-            )
-        print("self.srp", self.srp)
-        print("self.rrp", self.rrp)
-        print("self.sdp", self.sdp)
-        print("self.rdp", self.rdp)
-        print("Sensors: ", )
+        # print("self.srp", self.srp)
+        # print("self.rrp", self.rrp)
+        # print("self.sdp", self.sdp)
+        # print("self.rdp", self.rdp)
+        # print("Sensors: ", )
 
     def __check_dead_num(self, round_number):
         # jesli padl
@@ -375,7 +375,7 @@ class LEACHSimulation:
         if len(self.dead_num) > 0 and self.flag_first_dead == 0:
             self.first_dead_in = round_number
             self.flag_first_dead = 1
-            print(f'pierwszy wezel padł w rundzie: {round_number}')
+            # print(f'pierwszy wezel padł w rundzie: {round_number}')
 
     def __statistics(self, round_number):
         print('######################################')
