@@ -20,7 +20,7 @@ class Model:
 
         ############### ENERGIA (jednostki to J, każda wartośc opowiada 1B danych) #####################
         # Wstępna energia
-        self.Eo = 2
+        self.Eo = 1
 
         # Energia utracona podczas transmisji (ETX) i odbiorze (ERX)
         self.Eelec = 50 * 0.000000001       # Energia utracona przy wyborze
