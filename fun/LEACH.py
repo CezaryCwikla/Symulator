@@ -222,6 +222,16 @@ class LEACHSimulation:
 
             self.__check_dead_num(round_number)
 
+            # ######################################
+            # ############# STATISTICS #############
+            # ######################################
+            self.__statistics(round_number)
+
+            # if all nodes are dead or only sink is left, exit
+            if len(self.dead_num) >= self.n:
+                self.lastPeriod = round_number
+                print(f"all dead (dead={len(self.dead_num)}) in round {round_number}")
+                break
 
     def __cluster_head_selection_phase(self, round_number):
         # print('#################################################')
