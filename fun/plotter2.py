@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # todo: add condition to show sink only as red dot and not both red and blue
 def start(Sensors: [Sensor], myModel: Model, round_number):
     print('########################################')
-    print('############# plot Sensors #############')
+    print('############# Wyświetl węzły ###########')
     print('########################################')
     print()
 
@@ -16,69 +16,69 @@ def start(Sensors: [Sensor], myModel: Model, round_number):
     fig, axis = plt.subplots()
     axis.set_xlim(left=0, right=myModel.x)
     axis.set_ylim(bottom=0, top=myModel.y)
-
-    # numRx = myModel.numRx
-    # zeroarr = [0 for x in range(numRx)]
-    # circlex = [
-    #     zeroarr for x in range(numRx)
-    # ]
-    # circley = [
-    #     zeroarr for x in range(numRx)
-    # ]
-
-    # for i in range(numRx):
-    #     for j in range(numRx):
-    #         circlex[i][j] = (myModel.dr / 2) + ((j - 1) * myModel.dr)
-    #         circley[i][j] = (myModel.dr / 2) + ((i - 1) * myModel.dr)
-
-    # pi = 3.1415
-    # r = myModel.dr / 2
-    # angle = [0]
-    # last = 0
-    # for i in range(199):
-    #     angle.append(round(last + pi / 100, 4))
-    #     last += 3.14 / 100
-    #
-    # xp = [r * cos(each_angle) for each_angle in angle]
-    # yp = [r * sin(each_angle) for each_angle in angle]
-
     deadNum = 0
-    n_flag = True
+    f1_flag = True
+    f2_flag = True
+    f3_flag = True
+    f4_flag = True
     c_flag = True
     d_flag = True
     for sensor in Sensors:
         if sensor.E > 0:
             if sensor.type == 'N':
-                if n_flag:
-                    axis.scatter([sensor.xd], [sensor.yd], c='k', edgecolors='k', label='Nodes')
-                    n_flag = False
-                else:
-                    axis.scatter([sensor.xd], [sensor.yd], c='k', edgecolors='k')
-            #       plot(Sensors(i).xd, Sensors(i).yd, 'ko', 'MarkerSize', 5, 'MarkerFaceColor', 'k');
-            #             pass  # todo: Plot here
+                xl = [sensor.xd, Sensors[sensor.MCH].xd]
+                yl = [sensor.yd, Sensors[sensor.MCH].yd]
+                axis.plot(xl, yl)
+                if 'f4' in sensor.Fun and f4_flag:
+                    axis.scatter(sensor.xd-0.2, [sensor.yd], c='b', s=80, edgecolors='k', label='Węzeł o funkcji f4', marker='>')
+                    f4_flag = False
+                elif 'f4' in sensor.Fun:
+                    axis.scatter(sensor.xd-0.2, [sensor.yd], c='b', s=80, edgecolors='k', marker='>')
+                if 'f3' in sensor.Fun and f3_flag:
+                    axis.scatter(sensor.xd+0.2, [sensor.yd], c='g', s=80, edgecolors='k', label='Węzeł o funkcji f3', marker='<')
+                    f3_flag = False
+                elif 'f3' in sensor.Fun:
+                    axis.scatter(sensor.xd+0.2, [sensor.yd], c='g', s=80, edgecolors='k', marker='<')
+                if 'f2' in sensor.Fun and f2_flag:
+                    axis.scatter([sensor.xd], sensor.yd+0.2, c='orange', s=80, edgecolors='k', label='Węzeł o funkcji f2', marker='v')
+                    f2_flag = False
+                elif 'f2' in sensor.Fun:
+                    axis.scatter([sensor.xd], sensor.yd+0.2, c='orange', s=80, edgecolors='k', marker='v')
+                if 'f1' in sensor.Fun and f1_flag:
+                    axis.scatter([sensor.xd], sensor.yd-0.2, c='k', s=80, edgecolors='k', label='Węzeł o funkcji f1', marker='^')
+                    f1_flag = False
+                elif 'f1' in sensor.Fun:
+                    axis.scatter([sensor.xd], sensor.yd-0.2, c='k', s=80, edgecolors='k', marker='^')
+                axis.text(sensor.xd, sensor.yd, round(sensor.E, 3))
+                #       plot(Sensors(i).xd, Sensors(i).yd, 'ko', 'MarkerSize', 5, 'MarkerFaceColor', 'k');
+        #             pass  # todo: Plot here
+
             elif sensor.type == 'C':  # Sensors.type == 'C'
                 if c_flag:
-                    axis.scatter([sensor.xd], [sensor.yd], c='r', edgecolors='k', label='Cluster Head')
+                    axis.scatter([sensor.xd], [sensor.yd], s=140, c='r', edgecolors='k', marker=(5, 0),
+                                 label='Głowa klastra')
+                    axis.text(sensor.xd, sensor.yd, round(sensor.E, 3))
                     c_flag = False
                 else:
-                    axis.scatter([sensor.xd], [sensor.yd], c='r', edgecolors='k')
+                    axis.scatter([sensor.xd], [sensor.yd], s=140, c='r', edgecolors='k', marker=(5, 0))
+                    axis.text(sensor.xd, sensor.yd, round(sensor.E, 3))
                 # plot(Sensors(i).xd,Sensors(i).yd,'ko', 'MarkerSize', 5, 'MarkerFaceColor', 'r');
                 # pass  # todo: Plot here
         else:
             deadNum += 1
             if d_flag:
-                axis.scatter([sensor.xd], [sensor.yd], c='w', edgecolors='k', label='Dead')
+                axis.scatter([sensor.xd], [sensor.yd], c='w', edgecolors='k', marker='X', label='Wyczerpany')
                 d_flag = False
             else:
-                axis.scatter([sensor.xd], [sensor.yd], c='w', edgecolors='k')
+                axis.scatter([sensor.xd], [sensor.yd], c='w', edgecolors='k', marker='X')
     #         # plot(Sensors(i).xd,Sensors(i).yd,'ko', 'MarkerSize',5, 'MarkerFaceColor', 'w');
     #         pass  # todo: plot here
 
-    axis.scatter([Sensors[n].xd], [Sensors[n].yd], s=80, c='b', edgecolors='k', label="Sink")
-    plt.title('Network Plot for Leach \n Round no: %d' % round_number + '  Dead No: %d ' % deadNum)
+    axis.scatter([Sensors[n].xd], [Sensors[n].yd], s=140, c='b', edgecolors='k', label="Stacja bazowa", marker='*')
+    plt.title(
+        'Wykres sieci dla nowego algorytmu \n Runda numer: %d' % round_number + '  Liczba wyczerpanych węzłów: %d ' % deadNum)
     plt.xlabel('X [m]')
     plt.ylabel('Y [m]')
     plt.legend(loc='upper right')
-
-    plt.pause(0.01)
+    plt.show()
 

@@ -1,5 +1,5 @@
 import random
-
+random.seed(9)
 from LEACH_basics import Sensor
 
 

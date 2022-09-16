@@ -15,6 +15,8 @@ class Model:
         self.stacja_y = self.y * 0.5
         self.stacja_E = 1000
 
+        self.F = ["f1", "f2", "f3", "f4"]
+
         # Prawdopodobieństwo, że węzeł zostanie głową klastra
         self.p = 0.05
 
@@ -23,7 +25,7 @@ class Model:
         self.Eo = 1
 
         # Energia utracona podczas transmisji (ETX) i odbiorze (ERX)
-        self.Eelec = 50 * 0.000000001       # Energia utracona przy wyborze
+        self.Eelec = 50 * 0.000000001  # Energia utracona przy wyborze
         self.ETX = 50 * 0.000000001
         self.ERX = 50 * 0.000000001
 
@@ -58,17 +60,19 @@ class Model:
 class Sensor:
     def __init__(self):
         self.xd = 0
-        self.yd = 0                 # Koordynaty
-        self.G = 0                  # czy  był głowa klastra? 0 - nie
-        self.df = 0                 # dead? 0 - nie
-        self.type = 'N'             # Typ
-        self.E = 0                  # Energia
-        self.id = 0                 # ID
-        self.dis2sb = 0             # Oedległość do stacji
-        self.dis2ch = 0             # Odległość do głowy
-        self.MCH = 0                # Member którego klastra
+        self.yd = 0  # Koordynaty
+        self.G = 0  # czy  był głowa klastra? 0 - nie
+        self.df = 0  # dead? 0 - nie
+        self.type = 'N'  # Typ
+        self.E = 0  # Energia
+        self.id = 0  # ID
+        self.dis2sb = 0  # Oedległość do stacji
+        self.dis2ch = 0  # Odległość do głowy
+        self.MCH = 0  # Member którego klastra
         self.RR = 0
+        self.Fun = []
         self.MIN_DIST = 3
+
 
 def check_dist_and_relocate(sens: Sensor, list_of_sens):
 
@@ -79,6 +83,7 @@ def check_dist_and_relocate(sens: Sensor, list_of_sens):
         if distance < sens.MIN_DIST:
             return False
     return True
+
 
 def create_sensors(model: Model):
     n = model.n
@@ -101,8 +106,6 @@ def create_sensors(model: Model):
         #     for sensor in sensors[:-1]:
         #         f.write(str(sensor.yd) + "\n")
 
-
-
         # Czy był głową klastra? 0 - nie, 1 - tak
         sensor.G = 0
         # Flaga czy padł węzeł? 0 - nie
@@ -118,12 +121,14 @@ def create_sensors(model: Model):
         sensor.MCH = n
         # odegłość do stacji bazowej
         sensor.dis2sb = math.sqrt(pow((sensor.xd - sensors[-1].xd), 2) + pow((sensor.yd - sensors[-1].yd), 2))
+        sensor.Fun = random.sample(set(model.F), 2)
+
     with open("sensor_x.txt", "r") as f:
-        for i,line in enumerate(f):
-            sensors[i-1].xd = int(line.strip())
+        for i, line in enumerate(f):
+            sensors[i - 1].xd = int(line.strip())
     with open("sensor_y.txt", "r") as f:
-        for i,line in enumerate(f):
-            sensors[i-1].yd = int(line.strip())
+        for i, line in enumerate(f):
+            sensors[i - 1].yd = int(line.strip())
 
     # Stacja bazowa
 
@@ -134,11 +139,5 @@ def create_sensors(model: Model):
     sensors[n].type = 'S'
 
 
+
     return sensors
-
-
-
-
-
-
-

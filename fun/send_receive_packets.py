@@ -69,5 +69,5 @@ def start(sensors: list[Sensor], model: Model, senders: list, receivers: list, s
         rdp += rec_packets
         #print(f"zwiększono sdp o: {sent_packets} pakietów i rdp o: {rec_packets} pakietów")
 
-    print()
+
     return srp, rrp, sdp, rdp

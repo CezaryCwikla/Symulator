@@ -1,14 +1,14 @@
 from math import *
 import matplotlib
 import matplotlib.pyplot as plt
-import LEACH_basics
+import FLEACH_basics
+import FLEACH_select_ch
 import reset_sensors
-import LEACH_select_ch
 import send_receive_packets
 import findReceiver
 import findSender
 import join_to_nearest_ch
-import plotter
+import plotter2, plotter
 matplotlib.use('TkAgg')
 
 
@@ -23,22 +23,21 @@ def zeros(row, column):
 
     return re_list
 
-
-class LEACHSimulation:
+class FLEACHSimulation:
 
     def __init__(self, n=100):
-        self.n = n                  # Przypisz liczbę węzłów
+        self.n = n  # Przypisz liczbę węzłów
 
         # ###################################################################
         # ############# Dla przypisz_początkowe_wartości_węzłom #############
         # ###################################################################
-        self.dead_num = 0           # Liczba padnięty węzłów
-        self.num_of_ch = 0          # Liczba głów klastrów
-        self.flag_first_dead = 0    # Flaga do wskazywania kiedy umarł pierwszy węzeł
+        self.dead_num = 0  # Liczba padnięty węzłów
+        self.num_of_ch = 0  # Liczba głów klastrów
+        self.flag_first_dead = 0  # Flaga do wskazywania kiedy umarł pierwszy węzeł
         self.initEnergy = 0
 
         # Stwórz węzły i model energii, a następnie przypisz parametry
-        self.model = LEACH_basics.Model(self.n)
+        self.model = FLEACH_basics.Model(self.n)
 
         # Poniżej będzie długość (Max_rounds), więc każdy element będzie przechowywać całkowitą liczbę pakietów w każdej rundzie
         # długość to rmax + 1, ponieważ wykonujemy również jedną rundę inicjalizacji.
@@ -77,19 +76,18 @@ class LEACHSimulation:
         self.sum_energy_left_all_nodes = zeros(1, self.model.rmax + 1)
         self.avg_energy_All_sensor = zeros(1, self.model.rmax + 1)
         self.consumed_energy = zeros(1, self.model.rmax + 1)
-        self.Enheraf = zeros(1, self.model.rmax + 1)
+        self.Enheraf = zeros(1, self.model.rmax + 1) #srednia energia wezłów żywych!
 
         ##testtyyyyyyy
 
         print(self.model)
         print(vars(self.model))
-        print("length of below 4=", len(self.SRP))
+        print("LEN SRP =", len(self.SRP))
         print("self.SRP", self.SRP)
         print("self.RRP", self.RRP)
         print("self.SDP", self.SDP)
         print("self.RDP", self.RDP)
         print('----------------------------------------------')
-
 
     def start(self):
         print("#################################")
@@ -101,11 +99,6 @@ class LEACHSimulation:
         # ############# Stwórz Sensory #############
         # ##########################################
         self.__create_sen()
-
-        # ########################################
-        # ############# plot Sensors #############
-        # ########################################
-        # todo: Plot sensors Here
 
         # ############################################
         # ############# Start Simulation #############
@@ -130,7 +123,7 @@ class LEACHSimulation:
         print()
 
         # tworzenie losowego scenariusza i ladowanie losowej lokalizacji węzłow
-        self.Sensors = LEACH_basics.create_sensors(self.model)
+        self.Sensors = FLEACH_basics.create_sensors(self.model)
 
         for sensor in self.Sensors[:-1]:
             self.initEnergy += sensor.E
@@ -141,7 +134,6 @@ class LEACHSimulation:
 
         print("self.initEnergy", self.initEnergy)
         print('----------------------------------------------')
-
 
     def __start_simulation(self):
         print("############################################")
@@ -186,40 +178,20 @@ class LEACHSimulation:
         for round_number in range(1, self.model.rmax +1):
             self.r = round_number
 
-            # print('#####################################')
-            # print(f'############# Rounda {round_number} #############')
-            # print('#####################################')
-            #
-            # print('####################################################')
             # print('############# Inicjalizacja głównej pętli ##########')
-            # print('####################################################')
-            # print()
-
             self.srp, self.rrp, self.sdp, self.rdp = reset_sensors.start(self.Sensors, self.model, round_number)
 
-            # todo
-            # ########################################
-            # ############# plot Sensors??? #############
-            # ########################################
-
-
-            # #################################################
             # ############# wybór głowy klastra #############
-            # #################################################
             self.__cluster_head_selection_phase(round_number)
             self.no_of_ch = len(self.list_CH)  # Liczba głów klastrów
-            # ######################################################################
-            # ############# Wyswietl stan sieci przed ustalonym stanem #############
-            # ######################################################################
-            if round_number == 1 or round_number==100:
-                plotter.start(self.Sensors, self.model, round_number)
+
+            if round_number == 1:
+                plotter2.start(self.Sensors, self.model, round_number)
 
             # #################################################
             # ############# faza stanu ustalonego #############
             # #################################################
             self.__steady_state_phase()
-
-            #sprawdzanie czy jakis wezel padl
             self.__check_dead_num(round_number)
 
             # if all nodes are dead or only sink is left, exit
@@ -234,63 +206,49 @@ class LEACHSimulation:
         self.__print_statistics()
         figure, axis = plt.subplots(3, 2)
         a = list(range(len(self.SRP)))
-        axis[0,0].plot(a, self.SRP, label= "Wysłane pakiety")
-        axis[0,0].plot(a, self.RRP, label= "Odebrane pakiety")
-        axis[0,0].set_title("Liczba wysłanych i odebranych pakietów dotyczących routingu")
-        #plt.show()
+        axis[0, 0].plot(a, self.SRP, label="Wysłane pakiety")
+        axis[0, 0].plot(a, self.RRP, label="Odebrane pakiety")
+        axis[0, 0].set_title("Liczba wysłanych i odebranych pakietów dotyczących routingu")
+        # plt.show()
 
-        axis[0,1].plot(a, self.SDP, label= "Wysłane pakiety")
-        axis[0,1].plot(a, self.RDP, label= "Odebrane pakiety")
-        axis[0,1].set_title("Liczba wysłanych i odebranych pakietów danych")
-        #plt.show()
+        axis[0, 1].plot(a, self.SDP, label="Wysłane pakiety")
+        axis[0, 1].plot(a, self.RDP, label="Odebrane pakiety")
+        axis[0, 1].set_title("Liczba wysłanych i odebranych pakietów danych")
+        # plt.show()
 
-        axis[1,0].plot(a, self.sum_dead_nodes)
-        axis[1,0].set_title("Sumaryczna liczba rozładowanych węzłów")
-        #plt.show()
+        axis[1, 0].plot(a, self.sum_dead_nodes)
+        axis[1, 0].set_title("Sumaryczna liczba rozładowanych węzłów")
+        # plt.show()
 
-        axis[1,1].plot(a, self.ch_per_round)
-        axis[1,1].set_title("Liczba głów klastrów na rundę")
-        #plt.show()
+        axis[1, 1].plot(a, self.ch_per_round)
+        axis[1, 1].set_title("Liczba głów klastrów na rundę")
+        # plt.show()
 
-        axis[2,0].plot(a, self.avg_energy_All_sensor)
-        axis[2,0].set_title("Średnia energia węzłów na rundę")
-        #plt.show()
+        axis[2, 0].plot(a, self.avg_energy_All_sensor)
+        axis[2, 0].set_title("Średnia energia węzłów na rundę")
+        # plt.show()
 
-        axis[2,1].plot(a, self.consumed_energy)
-        axis[2,1].set_title("Całkowite zużycie energii na rundę")
+        axis[2, 1].plot(a, self.consumed_energy)
+        axis[2, 1].set_title("Całkowite zużycie energii na rundę")
         plt.show()
 
     def __cluster_head_selection_phase(self, round_number):
-        # print('#################################################')
-        # print('############# Wybór głowy węzła #############')
-        # print('#################################################')
-        # print()
+
         # Wybór Głowy Klastra  na podstawie fazy konfiguracji LEACH
         # self.list_CH przechowuje identyfikatory wszystkich CH w bieżącej rundzie
-        self.list_CH = LEACH_select_ch.start(self.Sensors, self.model, round_number)
+        self.list_CH = FLEACH_select_ch.start(self.Sensors, self.model, round_number)
         self.no_of_ch = len(self.list_CH)
 
-        # #########################################################################################
-        # ############# Rozgłaszanie głow klastrów do węzłów, które są w zasięgu ##################
-        # #########################################################################################
+        #rozgłaszanie głów
         self.__broadcast_cluster_head()
 
-        # dołącz do najblizszej głowy klastra, bez stacji bazowych!
+        #dołącz do najblizszej głowy klastra, bez stacji bazowych!
         join_to_nearest_ch.start(self.Sensors, self.model, self.list_CH)
-
-        # print("CH: ", self.list_CH)
-        # print("\nSensors:")
 
         # ########################################
         # ############# wykres dla wezłow #############
         # ########################################
-        # Todo: wykres tu jeszcze trzeba
-        #plotter.start(self.Sensors, self.model, round_number)
-        # todo TUTAJ JESZCZE DOKONCZYC FUNKCJE!!!!
-
-        # print('##################################################################')
-        # print('############# koniec fazy klastrowania, konfiguracji #############')
-        # print('##################################################################')
+        # plotter.start(self.Sensors, self.model, round_number)
 
 
     def __broadcast_cluster_head(self):
@@ -311,7 +269,6 @@ class LEACHSimulation:
             # print('self.Receivers: ', end='')
             # print(self.receivers)
 
-
             self.srp, self.rrp, self.sdp, self.rdp = send_receive_packets.start(
                 self.Sensors, self.model, [ch_id], self.receivers, self.srp, self.rrp, self.sdp, self.rdp,
                 packet_type='Hello'
@@ -322,13 +279,13 @@ class LEACHSimulation:
         # print("self.rdp", self.rdp)
         # print("Sensors: ", )
 
-
     def __steady_state_phase(self):
         # print('#################################################')
         # print('############# faza stanu ustalonego #############')
         # print('#################################################')
-
+        # print()
         for i in range(self.model.NumPacket):  # liczba pakietow w danej rundzie
+
 
             # print('##################################################################')
             # print('############# wszystkie czujniki wysylaja dane do CH #############')
@@ -351,12 +308,11 @@ class LEACHSimulation:
                 # print("self.rdp", self.rdp)
                 # print("Sensors: ", )
 
-            #plotter.start(self.Sensors, self.model, round_number)
+                # plotter.start(self.Sensors, self.model, round_number)
 
-        # print("################################################################")
-        # print("wyślij pakiet danych bezpośrednio z węzłów (nie znajdują się w żadnym klastrze) do Stacji #############")
-        # print(################################################################")
-        # przydatne tylko w algorytmie w którym uwzglednimy stacje bazową
+            # print("################################################################")
+            # print("wyślij pakiet danych bezpośrednio z węzłów (nie znajdują się w żadnym klastrze) do Stacji #############")
+            # print(################################################################")
 
             for sender in self.Sensors:
                 # if the node has sink as its CH but it's not sink itself and the node is not dead
@@ -392,7 +348,6 @@ class LEACHSimulation:
         # print("self.sdp", self.sdp)
         # print("self.rdp", self.rdp)
         # print("Sensors: ", )
-
     def __check_dead_num(self, round_number):
         # jesli padl
         for sensor in self.Sensors:

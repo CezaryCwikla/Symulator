@@ -1,4 +1,4 @@
-from LEACH_basics import Model, Sensor
+from FLEACH_basics import Model, Sensor
 from math import inf, sqrt
 
 def zeros(row, column):
@@ -30,6 +30,7 @@ def get_min_and_id_of_ch(model: Model, TotalCH, distance: list):
     return min_dist_from_all_ch, id_of_min_dist_ch
 
 
+
 def start(Sensors: list [Sensor], model: Model, TotalCH):
     # print('# ##############################################################')
     # print('# ############# Węzły dołączają do najbliższego CH #############')
@@ -47,20 +48,10 @@ def start(Sensors: list [Sensor], model: Model, TotalCH):
                     pow(Sensors[i].xd - Sensors[TotalCH[j]].xd, 2) + pow(Sensors[i].yd - Sensors[TotalCH[j]].yd, 2)
                 )
 
-        # print("printing Distance array:")
-        # for x in distance:
-        #     print(x)
-        # print()
-
-    # co poniżej robi to:
-    # Zapisaliśmy wszystkie CH jako wiersz i wzięliśmy odległość między każdym CH a wszystkimi węzłami w jego kolumnach
-    # to przyjmuje minimalną wartość każdej kolumny, tj. min dist dla każdego węzła i ta dist to dist to CH
-
+        # co poniżej robi to:
+        # Zapisaliśmy wszystkie CH jako wiersz i wzięliśmy odległość między każdym CH a wszystkimi węzłami w jego kolumnach
+        # to przyjmuje minimalną wartość każdej kolumny, tj. min dist dla każdego węzła i ta dist to dist to CH
         min_dist_from_all_ch, id_of_min_dist_ch = get_min_and_id_of_ch(model, TotalCH, distance)
-        # print("min_dist_from_all_ch")
-        # print(min_dist_from_all_ch)
-        # print('id_of_min_dist_ch')
-        # print(id_of_min_dist_ch)
 
         for i, sensor in enumerate(Sensors[:-1]):
             if sensor.E > 0:

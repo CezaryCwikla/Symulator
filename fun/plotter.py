@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 # todo: add condition to show sink only as red dot and not both red and blue
 def start(Sensors: [Sensor], myModel: Model, round_number):
     print('########################################')
-    print('############# plot Sensors #############')
+    print('############# Wyświetl węzły ###########')
     print('########################################')
     print()
 
@@ -27,7 +27,7 @@ def start(Sensors: [Sensor], myModel: Model, round_number):
                 yl = [sensor.yd, Sensors[sensor.MCH].yd]
                 axis.plot(xl, yl)
                 if n_flag:
-                    axis.scatter([sensor.xd], [sensor.yd], c='k', edgecolors='k', label='Nodes')
+                    axis.scatter([sensor.xd], [sensor.yd], c='k', edgecolors='k', label='Węzły')
                     axis.text(sensor.xd, sensor.yd, round(sensor.E,3))
                     n_flag = False
                 else:
@@ -38,24 +38,28 @@ def start(Sensors: [Sensor], myModel: Model, round_number):
 
             elif sensor.type == 'C':  # Sensors.type == 'C'
                 if c_flag:
-                    axis.scatter([sensor.xd], [sensor.yd], s=120, c='r', edgecolors='k', label='Cluster Head')
+                    axis.scatter([sensor.xd], [sensor.yd], s=140, c='r', edgecolors='k', marker=(5, 0),
+                                 label='Głowa klastra')
+                    axis.text(sensor.xd, sensor.yd, round(sensor.E, 3))
                     c_flag = False
                 else:
-                    axis.scatter([sensor.xd], [sensor.yd], s=120, c='r', edgecolors='k')
+                    axis.scatter([sensor.xd], [sensor.yd], s=140, c='r', edgecolors='k', marker=(5, 0))
+                    axis.text(sensor.xd, sensor.yd, round(sensor.E, 3))
                 # plot(Sensors(i).xd,Sensors(i).yd,'ko', 'MarkerSize', 5, 'MarkerFaceColor', 'r');
                 # pass  # todo: Plot here
+
         else:
             deadNum += 1
             if d_flag:
-                axis.scatter([sensor.xd], [sensor.yd], c='w', edgecolors='k', label='Dead')
+                axis.scatter([sensor.xd], [sensor.yd], c='w', edgecolors='k', marker='X', label='Wyczerpany')
                 d_flag = False
             else:
-                axis.scatter([sensor.xd], [sensor.yd], c='w', edgecolors='k')
+                axis.scatter([sensor.xd], [sensor.yd], c='w', edgecolors='k', marker='X')
     #         # plot(Sensors(i).xd,Sensors(i).yd,'ko', 'MarkerSize',5, 'MarkerFaceColor', 'w');
     #         pass  # todo: plot here
 
-    axis.scatter([Sensors[n].xd], [Sensors[n].yd], s=120, c='b', edgecolors='k', label="Sink")
-    plt.title('Network Plot for Leach \n Round no: %d' % round_number + '  Dead No: %d ' % deadNum)
+    axis.scatter([Sensors[n].xd], [Sensors[n].yd], s=140, c='b', edgecolors='k', label="Stacja bazowa", marker='*')
+    plt.title('Wykres sieci dla LEACH \n Runda numer: %d' % round_number + '  Liczba wyczerpanych węzłów: %d ' % deadNum)
     plt.xlabel('X [m]')
     plt.ylabel('Y [m]')
     plt.legend(loc='upper right')
