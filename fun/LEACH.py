@@ -211,7 +211,7 @@ class LEACHSimulation:
             # ######################################################################
             # ############# Wyswietl stan sieci przed ustalonym stanem #############
             # ######################################################################
-            if round_number == 1 or round_number==100:
+            if round_number == 1 or round_number == self.model.rmax:
                 plotter.start(self.Sensors, self.model, round_number)
 
             # #################################################
@@ -232,6 +232,7 @@ class LEACHSimulation:
             # ######################################
             self.__statistics(round_number)
         self.__print_statistics()
+
         figure, axis = plt.subplots(3, 2)
         a = list(range(len(self.SRP)))
         axis[0,0].plot(a, self.SRP, label= "Wysłane pakiety")
