@@ -25,9 +25,9 @@ def zeros(row, column):
 
 class FLEACHSimulation:
 
-    def __init__(self, n=100):
+    def __init__(self, n=100, version=1):
         self.n = n  # Przypisz liczbę węzłów
-
+        self.version = version
         # ###################################################################
         # ############# Dla przypisz_początkowe_wartości_węzłom #############
         # ###################################################################
@@ -185,8 +185,7 @@ class FLEACHSimulation:
             self.__cluster_head_selection_phase(round_number)
             self.no_of_ch = len(self.list_CH)  # Liczba głów klastrów
 
-            if round_number == 1 or round_number == self.model.rmax:
-                plotter2.start(self.Sensors, self.model, round_number)
+            plotter2.start(self.Sensors, self.model, round_number)
 
             # #################################################
             # ############# faza stanu ustalonego #############
@@ -204,32 +203,51 @@ class FLEACHSimulation:
             # ######################################
             self.__statistics(round_number)
         self.__print_statistics()
-        figure, axis = plt.subplots(3, 2)
+        figure, axis = plt.subplots(3, 2, figsize=(10, 6), constrained_layout=True)
         a = list(range(len(self.SRP)))
         axis[0, 0].plot(a, self.SRP, label="Wysłane pakiety")
         axis[0, 0].plot(a, self.RRP, label="Odebrane pakiety")
         axis[0, 0].set_title("Liczba wysłanych i odebranych pakietów dotyczących routingu")
-        # plt.show()
+        axis[0, 0].legend(loc='lower right', shadow=True)
+        axis[0, 0].set_ylabel('Liczba pakietów')
+        axis[0, 1].set_xlabel('Numer rundy')
+        axis[0, 0].grid(True)
 
         axis[0, 1].plot(a, self.SDP, label="Wysłane pakiety")
         axis[0, 1].plot(a, self.RDP, label="Odebrane pakiety")
         axis[0, 1].set_title("Liczba wysłanych i odebranych pakietów danych")
+        axis[0, 1].legend(loc='lower right', shadow=True)
+        axis[0, 1].set_ylabel('Liczba pakietów')
+        axis[0, 1].set_xlabel('Numer rundy')
+        axis[0, 1].grid(True)
         # plt.show()
 
         axis[1, 0].plot(a, self.sum_dead_nodes)
         axis[1, 0].set_title("Sumaryczna liczba rozładowanych węzłów")
+        axis[1, 0].set_ylabel('Liczba rozładowanych węzłów')
+        axis[1, 0].set_xlabel('Numer rundy')
+        axis[1, 0].grid(True)
         # plt.show()
 
         axis[1, 1].plot(a, self.ch_per_round)
         axis[1, 1].set_title("Liczba głów klastrów na rundę")
+        axis[1, 1].set_ylabel('Liczba głów klastrów')
+        axis[1, 1].set_xlabel('Numer rundy')
+        axis[1, 1].grid(True)
         # plt.show()
 
         axis[2, 0].plot(a, self.avg_energy_All_sensor)
         axis[2, 0].set_title("Średnia energia węzłów na rundę")
+        axis[2, 0].set_ylabel('Energia')
+        axis[2, 0].set_xlabel('Numer rundy')
+        axis[2, 0].grid(True)
         # plt.show()
 
         axis[2, 1].plot(a, self.consumed_energy)
         axis[2, 1].set_title("Całkowite zużycie energii na rundę")
+        axis[2, 1].set_ylabel('Energia')
+        axis[2, 1].set_xlabel('Numer rundy')
+        axis[2, 1].grid(True)
         plt.show()
 
     def __cluster_head_selection_phase(self, round_number):
@@ -243,8 +261,8 @@ class FLEACHSimulation:
         self.__broadcast_cluster_head()
 
         #dołącz do najblizszej głowy klastra, bez stacji bazowych!
-        join_to_nearest_ch.start(self.Sensors, self.model, self.list_CH)
-
+        join_to_nearest_ch.start(self.Sensors, self.model, self.list_CH, self.version)
+        print()
         # ########################################
         # ############# wykres dla wezłow #############
         # ########################################

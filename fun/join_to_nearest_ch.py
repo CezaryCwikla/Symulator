@@ -1,6 +1,5 @@
 from LEACH_basics import Model, Sensor
 from math import inf, sqrt
-
 def zeros(row, column):
     re_list = []
     for x in range(row):
@@ -30,7 +29,7 @@ def get_min_and_id_of_ch(model: Model, TotalCH, distance: list):
     return min_dist_from_all_ch, id_of_min_dist_ch
 
 
-def start(Sensors: list [Sensor], model: Model, TotalCH):
+def start(Sensors: list [Sensor], model: Model, TotalCH, ver=1):
     # print('# ##############################################################')
     # print('# ############# Węzły dołączają do najbliższego CH #############')
     # print('# ##############################################################')
@@ -64,8 +63,18 @@ def start(Sensors: list [Sensor], model: Model, TotalCH):
 
         for i, sensor in enumerate(Sensors[:-1]):
             if sensor.E > 0:
+                if ver == 2:
+                    if min_dist_from_all_ch[i] <= model.RR and min_dist_from_all_ch[i] < sensor.dis2sb:
+                        print(f"{sensor.id} is joining {TotalCH[id_of_min_dist_ch[i]]}")
+                        sensor.MCH = TotalCH[id_of_min_dist_ch[i]]
+                        sensor.dis2ch = min_dist_from_all_ch[i]
+                    else:
+                        print(f"{sensor.id} is joining sink")
+                        sensor.MCH = total_nodes
+                        sensor.dis2ch = sensor.dis2sb
+                else:
                 # jeśli węzeł znajduje się w RR CH i jest bliżej CH niż Stacja
-                if min_dist_from_all_ch[i] <= model.RR:
-                    # print(f'{sensor.id} dołącza do {TotalCH[id_of_min_dist_ch[i]]}')
-                    sensor.MCH = TotalCH[id_of_min_dist_ch[i]]
-                    sensor.dis2ch = min_dist_from_all_ch[i]
+                    if min_dist_from_all_ch[i] <= model.RR:
+                        # print(f'{sensor.id} dołącza do {TotalCH[id_of_min_dist_ch[i]]}')
+                        sensor.MCH = TotalCH[id_of_min_dist_ch[i]]
+                        sensor.dis2ch = min_dist_from_all_ch[i]

@@ -23,32 +23,48 @@ def start(Sensors: [Sensor], myModel: Model, round_number):
     f4_flag = True
     c_flag = True
     d_flag = True
+    w_flag = True
+    rozmiar_wezla = 10
+    oddalenie_od_srodka_hor = 0.5
+    oddalenie_od_srodka = 1
     for sensor in Sensors:
         if sensor.E > 0:
             if sensor.type == 'N':
                 xl = [sensor.xd, Sensors[sensor.MCH].xd]
                 yl = [sensor.yd, Sensors[sensor.MCH].yd]
                 axis.plot(xl, yl)
+                if w_flag:
+                    axis.scatter([sensor.xd], [sensor.yd], c='k', edgecolors='k', s=rozmiar_wezla, label='Węzeł')
+                    w_flag = False
+                else:
+                    axis.scatter([sensor.xd], [sensor.yd], c='k', edgecolors='k', s=rozmiar_wezla)
                 if 'f4' in sensor.Fun and f4_flag:
-                    axis.scatter(sensor.xd-0.2, [sensor.yd], c='b', s=80, edgecolors='k', label='Węzeł o funkcji f4', marker='>')
+                    axis.scatter(sensor.xd-oddalenie_od_srodka_hor, [sensor.yd], c='b', s=80, edgecolors='k', label='Funkcja f4 węzła', marker='>')
                     f4_flag = False
                 elif 'f4' in sensor.Fun:
-                    axis.scatter(sensor.xd-0.2, [sensor.yd], c='b', s=80, edgecolors='k', marker='>')
+                    axis.scatter(sensor.xd-oddalenie_od_srodka_hor, [sensor.yd], c='b', s=80, edgecolors='k', marker='>')
+
                 if 'f3' in sensor.Fun and f3_flag:
-                    axis.scatter(sensor.xd+0.2, [sensor.yd], c='g', s=80, edgecolors='k', label='Węzeł o funkcji f3', marker='<')
+                    axis.scatter(sensor.xd+oddalenie_od_srodka_hor, [sensor.yd], c='g', s=80, edgecolors='k', label='Funkcja f3 węzła', marker='<')
+
                     f3_flag = False
                 elif 'f3' in sensor.Fun:
-                    axis.scatter(sensor.xd+0.2, [sensor.yd], c='g', s=80, edgecolors='k', marker='<')
+                    axis.scatter(sensor.xd+oddalenie_od_srodka_hor, [sensor.yd], c='g', s=80, edgecolors='k', marker='<')
+
                 if 'f2' in sensor.Fun and f2_flag:
-                    axis.scatter([sensor.xd], sensor.yd+0.2, c='orange', s=80, edgecolors='k', label='Węzeł o funkcji f2', marker='v')
+                    axis.scatter([sensor.xd], sensor.yd+oddalenie_od_srodka, c='orange', s=80, edgecolors='k', label='Funkcja f2 węzła', marker='v')
+
                     f2_flag = False
                 elif 'f2' in sensor.Fun:
-                    axis.scatter([sensor.xd], sensor.yd+0.2, c='orange', s=80, edgecolors='k', marker='v')
+                    axis.scatter([sensor.xd], sensor.yd+oddalenie_od_srodka, c='orange', s=80, edgecolors='k', marker='v')
+
                 if 'f1' in sensor.Fun and f1_flag:
-                    axis.scatter([sensor.xd], sensor.yd-0.2, c='k', s=80, edgecolors='k', label='Węzeł o funkcji f1', marker='^')
+                    axis.scatter([sensor.xd], sensor.yd-oddalenie_od_srodka, c='m', s=80, edgecolors='k', label='Funkcja f1 węzła', marker='^')
+
                     f1_flag = False
                 elif 'f1' in sensor.Fun:
-                    axis.scatter([sensor.xd], sensor.yd-0.2, c='k', s=80, edgecolors='k', marker='^')
+                    axis.scatter([sensor.xd], sensor.yd-oddalenie_od_srodka, c='m', s=80, edgecolors='k', marker='^')
+
                 axis.text(sensor.xd, sensor.yd, round(sensor.E, 3))
                 #       plot(Sensors(i).xd, Sensors(i).yd, 'ko', 'MarkerSize', 5, 'MarkerFaceColor', 'k');
         #             pass  # todo: Plot here
@@ -67,7 +83,7 @@ def start(Sensors: [Sensor], myModel: Model, round_number):
         else:
             deadNum += 1
             if d_flag:
-                axis.scatter([sensor.xd], [sensor.yd], c='w', edgecolors='k', marker='X', label='Wyczerpany')
+                axis.scatter([sensor.xd], [sensor.yd], c='w', edgecolors='k', marker='X', label='Wyczerpany węzeł')
                 d_flag = False
             else:
                 axis.scatter([sensor.xd], [sensor.yd], c='w', edgecolors='k', marker='X')

@@ -90,6 +90,11 @@ def create_sensors(model: Model):
 
     # Jeden dodatkowy jako stacja bazowa
     sensors = [Sensor() for _ in range(n + 1)]
+    sensors[n].xd = model.stacja_x
+    sensors[n].yd = model.stacja_y
+    sensors[n].E = model.stacja_E
+    sensors[n].id = model.n
+    sensors[n].type = 'S'
 
     for i, sensor in enumerate(sensors[:-1]):
         # Koordynaty
@@ -123,21 +128,19 @@ def create_sensors(model: Model):
         sensor.dis2sb = math.sqrt(pow((sensor.xd - sensors[-1].xd), 2) + pow((sensor.yd - sensors[-1].yd), 2))
         sensor.Fun = random.sample(set(model.F), 2)
 
-    with open("sensor_x.txt", "r") as f:
+    with open(r"C:\Users\Czarko\PycharmProjects\Symulator\sensor_x.txt", "r") as f:
         for i, line in enumerate(f):
             sensors[i - 1].xd = int(line.strip())
-    with open("sensor_y.txt", "r") as f:
+    with open(r"C:\Users\Czarko\PycharmProjects\Symulator\sensor_y.txt", "r") as f:
         for i, line in enumerate(f):
             sensors[i - 1].yd = int(line.strip())
 
     # Stacja bazowa
-
     sensors[n].xd = model.stacja_x
     sensors[n].yd = model.stacja_y
     sensors[n].E = model.stacja_E
     sensors[n].id = model.n
     sensors[n].type = 'S'
-
 
 
     return sensors

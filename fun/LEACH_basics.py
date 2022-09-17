@@ -118,12 +118,13 @@ def create_sensors(model: Model):
         sensor.MCH = n
         # odegłość do stacji bazowej
         sensor.dis2sb = math.sqrt(pow((sensor.xd - sensors[-1].xd), 2) + pow((sensor.yd - sensors[-1].yd), 2))
-    with open("sensor_x.txt", "r") as f:
-        for i,line in enumerate(f):
-            sensors[i-1].xd = int(line.strip())
-    with open("sensor_y.txt", "r") as f:
-        for i,line in enumerate(f):
-            sensors[i-1].yd = int(line.strip())
+
+    with open(r"C:\Users\Czarko\PycharmProjects\Symulator\sensor_x.txt", "r") as f:
+        for i, line in enumerate(f):
+            sensors[i - 1].xd = int(line.strip())
+    with open(r"C:\Users\Czarko\PycharmProjects\Symulator\sensor_y.txt", "r") as f:
+        for i, line in enumerate(f):
+            sensors[i - 1].yd = int(line.strip())
 
     # Stacja bazowa
 
