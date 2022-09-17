@@ -185,7 +185,8 @@ class FLEACHSimulation:
             self.__cluster_head_selection_phase(round_number)
             self.no_of_ch = len(self.list_CH)  # Liczba głów klastrów
 
-            plotter2.start(self.Sensors, self.model, round_number)
+            if round_number == 150 or round_number == self.model.rmax:
+                plotter2.start(self.Sensors, self.model, round_number)
 
             # #################################################
             # ############# faza stanu ustalonego #############
