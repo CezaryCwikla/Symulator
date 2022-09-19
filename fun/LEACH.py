@@ -211,8 +211,8 @@ class LEACHSimulation:
             # ######################################################################
             # ############# Wyswietl stan sieci przed ustalonym stanem #############
             # ######################################################################
-            if round_number == 1 or round_number == self.model.rmax:
-                plotter.start(self.Sensors, self.model, round_number)
+            # if round_number == 1 or round_number == self.model.rmax - 2:
+               # plotter.start(self.Sensors, self.model, round_number)
 
             # #################################################
             # ############# faza stanu ustalonego #############
@@ -240,7 +240,7 @@ class LEACHSimulation:
         axis[0, 0].set_title("Liczba wysłanych i odebranych pakietów dotyczących routingu")
         axis[0, 0].legend(loc='lower right', shadow=True)
         axis[0, 0].set_ylabel('Liczba pakietów')
-        axis[0, 1].set_xlabel('Numer rundy')
+        axis[0, 0].set_xlabel('Numer rundy')
         axis[0, 0].grid(True)
 
         axis[0, 1].plot(a, self.SDP, label="Wysłane pakiety")
@@ -279,6 +279,8 @@ class LEACHSimulation:
         axis[2, 1].set_xlabel('Numer rundy')
         axis[2, 1].grid(True)
         plt.show()
+        print(f"Pierwszy węzeł padł w rundzie {self.first_dead_in}")
+
 
     def __cluster_head_selection_phase(self, round_number):
         # print('#################################################')

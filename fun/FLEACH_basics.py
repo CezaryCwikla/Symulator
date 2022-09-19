@@ -90,10 +90,10 @@ def create_sensors(model: Model):
     # Jeden dodatkowy jako stacja bazowa
     sensors = [Sensor() for _ in range(n + 1)]
 
-    with open(r"C:\Users\Czarko\PycharmProjects\Symulator\sensor_x.txt", "r") as f:
+    with open(r"C:\Users\Admin\Desktop\Symulator\sensor_x.txt", "r") as f:
         for i, line in enumerate(f):
             sensors[i - 1].xd = int(line.strip())
-    with open(r"C:\Users\Czarko\PycharmProjects\Symulator\sensor_y.txt", "r") as f:
+    with open(r"C:\Users\Admin\Desktop\Symulator\sensor_y.txt", "r") as f:
         for i, line in enumerate(f):
             sensors[i - 1].yd = int(line.strip())
 

@@ -184,9 +184,10 @@ class FLEACHSimulation:
             # ############# wybór głowy klastra #############
             self.__cluster_head_selection_phase(round_number)
             self.no_of_ch = len(self.list_CH)  # Liczba głów klastrów
-
-            if round_number == 150 or round_number == self.model.rmax:
-                plotter2.start(self.Sensors, self.model, round_number)
+            if self.no_of_ch < 5:
+                print(self.no_of_ch)
+            if round_number == 1 or round_number == self.model.rmax or round_number == self.model.rmax - 10:
+                plotter2.start(self.Sensors, self.model, round_number, self.version)
 
             # #################################################
             # ############# faza stanu ustalonego #############
@@ -211,7 +212,7 @@ class FLEACHSimulation:
         axis[0, 0].set_title("Liczba wysłanych i odebranych pakietów dotyczących routingu")
         axis[0, 0].legend(loc='lower right', shadow=True)
         axis[0, 0].set_ylabel('Liczba pakietów')
-        axis[0, 1].set_xlabel('Numer rundy')
+        axis[0, 0].set_xlabel('Numer rundy')
         axis[0, 0].grid(True)
 
         axis[0, 1].plot(a, self.SDP, label="Wysłane pakiety")
@@ -250,12 +251,13 @@ class FLEACHSimulation:
         axis[2, 1].set_xlabel('Numer rundy')
         axis[2, 1].grid(True)
         plt.show()
+        print(f"Pierwszy węzeł padł w rundzie {self.first_dead_in}")
 
     def __cluster_head_selection_phase(self, round_number):
 
         # Wybór Głowy Klastra  na podstawie fazy konfiguracji LEACH
         # self.list_CH przechowuje identyfikatory wszystkich CH w bieżącej rundzie
-        self.list_CH = FLEACH_select_ch.start(self.Sensors, self.model, round_number)
+        self.list_CH = FLEACH_select_ch.start(self.Sensors, self.model, round_number, self.version)
         self.no_of_ch = len(self.list_CH)
 
         #rozgłaszanie głów

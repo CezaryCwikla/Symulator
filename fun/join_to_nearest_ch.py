@@ -29,7 +29,7 @@ def get_min_and_id_of_ch(model: Model, TotalCH, distance: list):
     return min_dist_from_all_ch, id_of_min_dist_ch
 
 
-def start(Sensors: list [Sensor], model: Model, TotalCH, ver=1):
+def start(Sensors: list [Sensor], model: Model, TotalCH, version = 1):
     # print('# ##############################################################')
     # print('# ############# Węzły dołączają do najbliższego CH #############')
     # print('# ##############################################################')
@@ -63,13 +63,13 @@ def start(Sensors: list [Sensor], model: Model, TotalCH, ver=1):
 
         for i, sensor in enumerate(Sensors[:-1]):
             if sensor.E > 0:
-                if ver == 2:
+                if version == 2 or version == 3:
                     if min_dist_from_all_ch[i] <= model.RR and min_dist_from_all_ch[i] < sensor.dis2sb:
-                        print(f"{sensor.id} is joining {TotalCH[id_of_min_dist_ch[i]]}")
+                        # print(f"{sensor.id} is joining {TotalCH[id_of_min_dist_ch[i]]}")
                         sensor.MCH = TotalCH[id_of_min_dist_ch[i]]
                         sensor.dis2ch = min_dist_from_all_ch[i]
                     else:
-                        print(f"{sensor.id} is joining sink")
+                        # print(f"{sensor.id} is joining sink")
                         sensor.MCH = total_nodes
                         sensor.dis2ch = sensor.dis2sb
                 else:

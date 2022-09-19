@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 # todo: add condition to show sink only as red dot and not both red and blue
-def start(Sensors: [Sensor], myModel: Model, round_number):
+def start(Sensors: [Sensor], myModel: Model, round_number, wersja):
     print('########################################')
     print('############# Wyświetl węzły ###########')
     print('########################################')
@@ -91,8 +91,15 @@ def start(Sensors: [Sensor], myModel: Model, round_number):
     #         pass  # todo: plot here
 
     axis.scatter([Sensors[n].xd], [Sensors[n].yd], s=140, c='b', edgecolors='k', label="Stacja bazowa", marker='*')
-    plt.title(
-        'Wykres sieci dla nowego algorytmu \n Runda numer: %d' % round_number + '  Liczba wyczerpanych węzłów: %d ' % deadNum)
+    if wersja == 1:
+        plt.title(
+            'Wykres sieci dla pierwszego zaproponowanego algorytmu \n Runda numer: %d' % round_number + '  Liczba wyczerpanych węzłów: %d ' % deadNum)
+    elif wersja == 2:
+        plt.title(
+            'Wykres sieci dla drugiego zaproponowanego algorytmu \n Runda numer: %d' % round_number + '  Liczba wyczerpanych węzłów: %d ' % deadNum)
+    elif wersja == 3:
+        plt.title(
+            'Wykres sieci dla trzeciego zaproponowanego algorytmu \n Runda numer: %d' % round_number + '  Liczba wyczerpanych węzłów: %d ' % deadNum)
     plt.xlabel('X [m]')
     plt.ylabel('Y [m]')
     plt.legend(loc='upper right')
