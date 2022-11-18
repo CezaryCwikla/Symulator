@@ -479,7 +479,6 @@ class LEACHSimulation:
         print("self.SDP", self.SDP)
         print("self.RDP", self.RDP)
         print('----------------------------------------------')
-
         # print('self.total_energy_dissipated', self.total_energy_dissipated)
         # print('self.AllSensorEnergy', self.AllSensorEnergy)
         print('self.sum_dead_nodes', self.sum_dead_nodes)
@@ -490,3 +489,15 @@ class LEACHSimulation:
         print('self.consumed_energy', self.consumed_energy)
         print('self.Enheraf', self.Enheraf)
         print('----------------------------------------------')
+        print(self.SRP[150], ",", self.SRP[175], ",", self.SRP[200])
+        print(self.RRP[150], ",", self.RRP[175], ",", self.RRP[200])
+        print(self.SDP[150], ",", self.SDP[175], ",", self.SDP[200])
+        print(self.RDP[150], ",", self.RDP[175], ",", self.RDP[200])
+        print(self.sum_dead_nodes[150], ",", self.sum_dead_nodes[175], ",", self.sum_dead_nodes[200])
+        print(self.ch_per_round[150], ",", self.ch_per_round[175], ",", self.ch_per_round[200])
+        #    print(self.alive_sensors[150], ",", self.alive_sensors[175], ",", self.alive_sensors[200])
+        print(self.sum_energy_left_all_nodes[150], ",", self.sum_energy_left_all_nodes[175], ",",
+              self.sum_energy_left_all_nodes[200])
+        # #print(self.avg_energy_All_sensor[150], ",", self.avg_energy_All_sensor[175], ",",
+        #       self.avg_energy_All_sensor[200])
+        print(self.consumed_energy[150], ",", self.consumed_energy[175], ",", self.consumed_energy[200])
