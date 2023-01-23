@@ -30,7 +30,7 @@ def start(sensors: list[Sensor], model: Model, senders: list, receivers: list, s
 
     for sender in senders:
         for receiver in receivers:
-            #print("########wysyłający to: ", sender, "odbierający to: ", receiver)
+            #print("######## Wysyłający to: ", sender, "odbierający to: ", receiver)
             #print()
             distance = math.sqrt(
                 pow(sensors[sender].xd - sensors[receiver].xd, 2) +
@@ -40,11 +40,10 @@ def start(sensors: list[Sensor], model: Model, senders: list, receivers: list, s
 
             if distance > model.do:
                 sensors[sender].E -= (model.ETX * PacketSize) + model.Emp * PacketSize * pow(distance, 4)
-                sent_packets = send_rec(sensors, sender, sent_packets)
             else:
-                sensors[sender].E -= (model.ETX * PacketSize) + model.Efs * PacketSize * pow(distance,
-                                                                                           2)  # różnica jest potęgi do 2 i do 4
-                sent_packets = send_rec(sensors, sender, sent_packets)
+                sensors[sender].E -= (model.ETX * PacketSize) + model.Efs * PacketSize * pow(distance, 2)
+                # różnica jest potęgi do 2 i do 4
+            sent_packets = send_rec(sensors, sender, sent_packets)
 
     for receiver in receivers:
         sensors[receiver].E -= (model.ERX + model.EDA) * PacketSize
@@ -68,6 +67,5 @@ def start(sensors: list[Sensor], model: Model, senders: list, receivers: list, s
         sdp += sent_packets
         rdp += rec_packets
         #print(f"zwiększono sdp o: {sent_packets} pakietów i rdp o: {rec_packets} pakietów")
-
 
     return srp, rrp, sdp, rdp

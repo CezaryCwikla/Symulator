@@ -24,9 +24,9 @@ def start(sensors: list[Sensor], model: Model, total_ch, version=1, curr_sens=li
         #     print(x)
         # print()
 
-    # co poniżej robi to:
-    # Zapisaliśmy wszystkie CH jako wiersz i wzięliśmy odległość między każdym CH a wszystkimi węzłami w jego kolumnach
-    # to przyjmuje minimalną wartość każdej kolumny, tj. min dist dla każdego węzła i ta dist to dist to CH
+        # co poniżej robi to:
+        # Zapisaliśmy wszystkie CH jako wiersz i wzięliśmy odległość między każdym CH a wszystkimi węzłami w jego kolumnach
+        # to przyjmuje minimalną wartość każdej kolumny, tj. min dist dla każdego węzła i ta dist to dist to CH
 
         min_dist_from_all_ch, id_of_min_dist_ch = get_min_and_id_of_ch(model, total_ch, distance)
         # print("min_dist_from_all_ch")

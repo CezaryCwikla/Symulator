@@ -51,7 +51,7 @@ class Model:
         self.hello_packet_len = 100
 
         # Liczba pakietów wysłanych w fazie stanu ustalonego
-        self.NumPacket = 20
+        self.NumPacket = 10
 
         # Zasieg radiowy
         self.RR = 0.5 * self.x * math.sqrt(2)
@@ -136,7 +136,6 @@ def create_sensors(model: Model):
         # odegłość do stacji bazowej
         sensor.dis2sb = math.sqrt(pow((sensor.xd - sensors[-1].xd), 2) + pow((sensor.yd - sensors[-1].yd), 2))
         sensor.Fun = random.sample(set(model.F), 2)
-
 
 
 

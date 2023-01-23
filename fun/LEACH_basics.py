@@ -2,6 +2,7 @@ import random
 import math
 random.seed(9)
 
+
 class Model:
     def __init__(self, n):
         self.n = n
@@ -70,15 +71,16 @@ class Sensor:
         self.RR = 0
         self.MIN_DIST = 3
 
-def check_dist_and_relocate(sens: Sensor, list_of_sens):
+# def check_dist_and_relocate(sens: Sensor, list_of_sens):
+#
+#     for node in list_of_sens:
+#         if node == sens:
+#             continue
+#         distance = math.sqrt(pow(sens.xd - node.xd, 2) + pow(sens.yd - node.yd, 2))
+#         if distance < sens.MIN_DIST:
+#             return False
+#     return True
 
-    for node in list_of_sens:
-        if node == sens:
-            continue
-        distance = math.sqrt(pow(sens.xd - node.xd, 2) + pow(sens.yd - node.yd, 2))
-        if distance < sens.MIN_DIST:
-            return False
-    return True
 
 def create_sensors(model: Model):
     n = model.n

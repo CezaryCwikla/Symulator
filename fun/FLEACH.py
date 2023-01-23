@@ -23,6 +23,7 @@ def zeros(row, column):
 
     return re_list
 
+
 class FLEACHSimulation:
 
     def __init__(self, n=100, version=1):
@@ -98,17 +99,17 @@ class FLEACHSimulation:
         # ##########################################
         # ############# Stwórz Sensory #############
         # ##########################################
-        self.__create_sen()
+        self.create_sen()
 
         # ############################################
         # ############# Start Simulation #############
         # ############################################
-        self.__start_simulation()
+        self.start_simulation()
 
         # #############################################
         # ############# Main loop program #############
         # #############################################
-        self.__main_loop()
+        self.main_loop()
 
         # Todo: all plotting should be done in Leach_plotter file
 
@@ -116,7 +117,7 @@ class FLEACHSimulation:
         print('############# Koniec symulacji #############')
         print('-------------------- XXX --------------------')
 
-    def __create_sen(self):
+    def create_sen(self):
         print("##########################################")
         print("############# Tworzenie czujników #############")
         print("##########################################")
@@ -135,7 +136,7 @@ class FLEACHSimulation:
         print("self.initEnergy", self.initEnergy)
         print('----------------------------------------------')
 
-    def __start_simulation(self):
+    def start_simulation(self):
         print("############################################")
         print("############# Start Simulation #############")
         print("############################################")
@@ -169,7 +170,7 @@ class FLEACHSimulation:
         print('self.SDP', self.SDP)
         print('self.RDP', self.RDP)
 
-    def __main_loop(self):
+    def main_loop(self):
         print("################################################")
         print("############# Główna część programu#############")
         print("################################################")
@@ -182,7 +183,7 @@ class FLEACHSimulation:
             self.srp, self.rrp, self.sdp, self.rdp = reset_sensors.start(self.Sensors, self.model, round_number)
 
             # ############# wybór głowy klastra #############
-            self.__cluster_head_selection_phase(round_number)
+            self.cluster_head_selection_phase(round_number)
             self.no_of_ch = len(self.list_CH)  # Liczba głów klastrów
             if self.no_of_ch < 5:
                 print(self.no_of_ch)
@@ -192,8 +193,8 @@ class FLEACHSimulation:
             # #################################################
             # ############# faza stanu ustalonego #############
             # #################################################
-            self.__steady_state_phase()
-            self.__check_dead_num(round_number)
+            self.steady_state_phase()
+            self.check_dead_num(round_number)
 
             # if all nodes are dead or only sink is left, exit
             if len(self.dead_num) >= self.n:
@@ -203,8 +204,11 @@ class FLEACHSimulation:
             # ######################################
             # ############# STATISTICS #############
             # ######################################
-            self.__statistics(round_number)
-        self.__print_statistics()
+            self.statistics(round_number)
+            self.print_statistics()
+            self.plots()
+
+    def plots(self):
         figure, axis = plt.subplots(3, 2, figsize=(10, 6), constrained_layout=True)
         a = list(range(len(self.SRP)))
         axis[0, 0].plot(a, self.SRP, label="Wysłane pakiety")
@@ -253,7 +257,7 @@ class FLEACHSimulation:
         plt.show()
         print(f"Pierwszy węzeł padł w rundzie {self.first_dead_in}")
 
-    def __cluster_head_selection_phase(self, round_number):
+    def cluster_head_selection_phase(self, round_number):
 
         # Wybór Głowy Klastra  na podstawie fazy konfiguracji LEACH
         # self.list_CH przechowuje identyfikatory wszystkich CH w bieżącej rundzie
@@ -261,18 +265,18 @@ class FLEACHSimulation:
         self.no_of_ch = len(self.list_CH)
 
         #rozgłaszanie głów
-        self.__broadcast_cluster_head()
+        self.broadcast_cluster_head()
 
         #dołącz do najblizszej głowy klastra, bez stacji bazowych!
         join_to_nearest_ch.start(self.Sensors, self.model, self.list_CH, self.version)
-        print()
+
         # ########################################
         # ############# wykres dla wezłow #############
         # ########################################
         # plotter.start(self.Sensors, self.model, round_number)
 
 
-    def __broadcast_cluster_head(self):
+    def broadcast_cluster_head(self):
         # print('#########################################################################################')
         # print('############# Rozgłaszanie do wszystkich węzłów, które są w zasięgu #####################')
         # print('#########################################################################################')
@@ -299,7 +303,7 @@ class FLEACHSimulation:
         # print("self.rdp", self.rdp)
         # print("Sensors: ", )
 
-    def __steady_state_phase(self):
+    def steady_state_phase(self):
         # print('#################################################')
         # print('############# faza stanu ustalonego #############')
         # print('#################################################')
@@ -368,7 +372,7 @@ class FLEACHSimulation:
         # print("self.sdp", self.sdp)
         # print("self.rdp", self.rdp)
         # print("Sensors: ", )
-    def __check_dead_num(self, round_number):
+    def check_dead_num(self, round_number):
         # jesli padl
         for sensor in self.Sensors:
             if sensor.E <= 0 and sensor not in self.dead_num:
@@ -385,7 +389,7 @@ class FLEACHSimulation:
             self.flag_first_dead = 1
             print(f'pierwszy wezel padł w rundzie: {round_number}')
 
-    def __statistics(self, round_number):
+    def statistics(self, round_number):
         # print('######################################')
         # print('############# STATYSTKI ##############')
         # print('######################################')
@@ -393,10 +397,10 @@ class FLEACHSimulation:
         self.sum_dead_nodes[round_number] = len(self.dead_num)
         self.ch_per_round[round_number] = self.no_of_ch
 
-        self.SRP[round_number] = self.srp
-        self.RRP[round_number] = self.rrp
-        self.SDP[round_number] = self.sdp
-        self.RDP[round_number] = self.rdp
+        self.SRP[round_number] += self.srp
+        self.RRP[round_number] += self.rrp
+        self.SDP[round_number] += self.sdp
+        self.RDP[round_number] += self.rdp
 
         self.alive = 0
         sum_energy_left_all_nodes_in_curr_round = 0
@@ -424,7 +428,7 @@ class FLEACHSimulation:
         else:
             self.Enheraf[round_number] = 0
 
-    def __print_statistics(self):
+    def print_statistics(self):
         #print("round number:", round_number)
         print("len(self.SRP)", len(self.SRP))
         print("self.SRP", self.SRP)

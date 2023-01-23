@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 # todo: add condition to show sink only as red dot and not both red and blue
-def start(Sensors: [Sensor], myModel: Model, round_number, wersja=1):
+def start(Sensors: [Sensor], myModel: Model, round_number, wersja, curr_fun):
     print('########################################')
     print('############# Wyświetl węzły ###########')
     print('########################################')
@@ -30,9 +30,10 @@ def start(Sensors: [Sensor], myModel: Model, round_number, wersja=1):
     for sensor in Sensors:
         if sensor.E > 0:
             if sensor.type == 'N':
-                xl = [sensor.xd, Sensors[sensor.MCH].xd]
-                yl = [sensor.yd, Sensors[sensor.MCH].yd]
-                axis.plot(xl, yl)
+                if curr_fun in sensor.Fun:
+                    xl = [sensor.xd, Sensors[sensor.MCH].xd]
+                    yl = [sensor.yd, Sensors[sensor.MCH].yd]
+                    axis.plot(xl, yl)
                 if w_flag:
                     axis.scatter([sensor.xd], [sensor.yd], c='k', edgecolors='k', s=rozmiar_wezla, label='Węzeł')
                     w_flag = False

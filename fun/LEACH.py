@@ -206,7 +206,7 @@ class LEACHSimulation:
             # #################################################
             # ############# wybór głowy klastra #############
             # #################################################
-            self.__cluster_head_selection_phase(round_number)
+            self.cluster_head_selection_phase(round_number)
             self.no_of_ch = len(self.list_CH)  # Liczba głów klastrów
             # ######################################################################
             # ############# Wyswietl stan sieci przed ustalonym stanem #############
@@ -232,7 +232,9 @@ class LEACHSimulation:
             # ######################################
             self.__statistics(round_number)
         self.__print_statistics()
+        self.plots()
 
+    def plots(self):
         figure, axis = plt.subplots(3, 2, figsize=(10, 6), constrained_layout=True)
         a = list(range(len(self.SRP)))
         axis[0, 0].plot(a, self.SRP, label="Wysłane pakiety")
@@ -282,7 +284,7 @@ class LEACHSimulation:
         print(f"Pierwszy węzeł padł w rundzie {self.first_dead_in}")
 
 
-    def __cluster_head_selection_phase(self, round_number):
+    def cluster_head_selection_phase(self, round_number):
         # print('#################################################')
         # print('############# Wybór głowy węzła #############')
         # print('#################################################')
@@ -295,7 +297,7 @@ class LEACHSimulation:
         # #########################################################################################
         # ############# Rozgłaszanie głow klastrów do węzłów, które są w zasięgu ##################
         # #########################################################################################
-        self.__broadcast_cluster_head()
+        self.broadcast_cluster_head()
 
         # dołącz do najblizszej głowy klastra, bez stacji bazowych!
         join_to_nearest_ch.start(self.Sensors, self.model, self.list_CH)
@@ -315,7 +317,7 @@ class LEACHSimulation:
         # print('##################################################################')
 
 
-    def __broadcast_cluster_head(self):
+    def broadcast_cluster_head(self):
         # print('#########################################################################################')
         # print('############# Rozgłaszanie do wszystkich węzłów, które są w zasięgu #####################')
         # print('#########################################################################################')

@@ -17,14 +17,14 @@ def zeros(row, column):
     return re_list
 
 
-def start(sensors: list[Sensor], model: Model, sender, sender_rr):
+def start(sensors: list[Sensor], model: Model, curr_sens, sender, sender_rr):
     receiver = []
 
     # Oblicz dystans wszystki węzłów z wysyłającym
     n = model.n
     distance = zeros(1, n)
 
-    for i, sensor in enumerate(sensors[:-1]):
+    for i, sensor in enumerate(curr_sens[:-1]):
         distance[i] = math.sqrt(
             pow(sensor.xd - sensors[sender].xd, 2) + pow(sensor.yd - sensors[sender].yd, 2)
         )
