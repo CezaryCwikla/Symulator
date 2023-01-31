@@ -13,7 +13,7 @@ def start(Sensors: [Sensor], myModel: Model, round_number, wersja, curr_fun):
     print()
 
     n = myModel.n
-    fig, axis = plt.subplots()
+    fig, axis = plt.subplots(figsize=(10, 8))
     axis.set_xlim(left=0, right=myModel.x)
     axis.set_ylim(bottom=0, top=myModel.y)
     deadNum = 0
