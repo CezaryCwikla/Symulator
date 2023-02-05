@@ -1,7 +1,7 @@
 import random
 import numpy as np
 import math
-random.seed(9)
+#random.seed(9)
 from FLEACH_basics import Sensor
 
 

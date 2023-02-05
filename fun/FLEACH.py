@@ -205,8 +205,8 @@ class FLEACHSimulation:
             # ############# STATISTICS #############
             # ######################################
             self.statistics(round_number)
-            self.print_statistics()
-            self.plots()
+        self.print_statistics()
+        self.plots()
 
     def plots(self):
         figure, axis = plt.subplots(3, 2, figsize=(10, 6), constrained_layout=True)

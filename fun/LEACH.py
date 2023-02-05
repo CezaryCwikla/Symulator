@@ -211,8 +211,8 @@ class LEACHSimulation:
             # ######################################################################
             # ############# Wyswietl stan sieci przed ustalonym stanem #############
             # ######################################################################
-            # if round_number == 1 or round_number == self.model.rmax - 2:
-               # plotter.start(self.Sensors, self.model, round_number)
+            if round_number == 1 or round_number == self.model.rmax - 2:
+               plotter.start(self.Sensors, self.model, round_number)
 
             # #################################################
             # ############# faza stanu ustalonego #############

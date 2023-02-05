@@ -6,7 +6,6 @@ from LEACH_basics import Sensor
 def start(sensors: list[Sensor], model, round_number: int):
     CH = []
     n = model.n
-
     for sensor in sensors[:-1]:
         if sensor.E > 0 and sensor.G <= 0:
             temp = random.uniform(0,1)

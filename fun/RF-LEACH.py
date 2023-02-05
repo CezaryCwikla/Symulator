@@ -38,8 +38,8 @@ class RFLEACH(FLEACHSimulation):
         print("############# Główna część programu#############")
         print("################################################")
         print()
-
-        for round_number in range(1, self.model.rmax +1):
+        round_number = 1
+        while round_number < self.model.rmax:
             self.r = round_number
 
             # print('#####################################')
@@ -52,8 +52,8 @@ class RFLEACH(FLEACHSimulation):
 
                 self.cluster_head_selection_phase(round_number, curr_sens)
                 self.no_of_ch = len(self.list_CH)  # Liczba głów klastrów
-                print(self.no_of_ch)
-                plotter3.start(self.Sensors, self.model, round_number, 1, sens_fun)
+
+                #plotter3.start(self.Sensors, self.model, round_number, 1, sens_fun)
                 self.steady_state_phase(curr_sens)
                 self.check_dead_num(round_number)
 
@@ -66,6 +66,9 @@ class RFLEACH(FLEACHSimulation):
                 # ############# STATISTICS #############
                 # ######################################
                 self.statistics(round_number)
+                print(self.list_CH)
+                print(self.sdp, self.rdp)
+                round_number += 1
         self.print_statistics()
         self.plots()
 
@@ -103,8 +106,6 @@ class RFLEACH(FLEACHSimulation):
             for receiver in self.list_CH:
                 sender = findSender.start(curr_sens, receiver)
 
-                # print("sender: ", sender)
-                # print("receiver: ", receiver)
                 self.srp, self.rrp, self.sdp, self.rdp = send_receive_packets.start(
                     self.Sensors, self.model, sender, [receiver], self.srp, self.rrp, self.sdp, self.rdp,
                     packet_type='Data'
@@ -114,7 +115,6 @@ class RFLEACH(FLEACHSimulation):
                 if sender.MCH == self.n and sender.id != self.n and sender.E > 0:
                     self.receivers = [self.n]
                     sender = [sender.id]
-
                     # print(f'wezel {sender} przesle prosto do stacji bazowej')
 
                     self.srp, self.rrp, self.sdp, self.rdp = send_receive_packets.start(

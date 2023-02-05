@@ -1,6 +1,7 @@
 import random
 import math
-random.seed(9)
+# random.seed(9)
+
 
 class Model:
     def __init__(self, n):
@@ -42,7 +43,7 @@ class Model:
 
         ######################## PARAMETRY SYMULACJI #############################
         # maksymalna liczba rund
-        self.rmax = 200
+        self.rmax = 400
 
         # Rozmiar pakietu danych
         self.data_packet_len = 4000
@@ -102,7 +103,7 @@ def create_sensors(model: Model):
     sensors[n].E = model.stacja_E
     sensors[n].id = model.n
     sensors[n].type = 'S'
-
+    sensors[n].Fun = random.sample(set(model.F), 4)
 
 
     for i, sensor in enumerate(sensors[:-1]):
@@ -135,8 +136,6 @@ def create_sensors(model: Model):
         sensor.MCH = n
         # odegłość do stacji bazowej
         sensor.dis2sb = math.sqrt(pow((sensor.xd - sensors[-1].xd), 2) + pow((sensor.yd - sensors[-1].yd), 2))
-        sensor.Fun = random.sample(set(model.F), 2)
-
-
+        sensor.Fun = random.sample(set(model.F), 4)
 
     return sensors

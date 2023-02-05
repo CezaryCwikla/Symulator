@@ -66,7 +66,7 @@ def start(Sensors: [Sensor], myModel: Model, round_number, wersja, curr_fun):
                 elif 'f1' in sensor.Fun:
                     axis.scatter([sensor.xd], sensor.yd-oddalenie_od_srodka, c='m', s=80, edgecolors='k', marker='^')
 
-                axis.text(sensor.xd, sensor.yd, round(sensor.E, 3))
+                axis.text(sensor.xd, sensor.yd, round(sensor.id, 3))
                 #       plot(Sensors(i).xd, Sensors(i).yd, 'ko', 'MarkerSize', 5, 'MarkerFaceColor', 'k');
         #             pass  # todo: Plot here
 
@@ -74,11 +74,11 @@ def start(Sensors: [Sensor], myModel: Model, round_number, wersja, curr_fun):
                 if c_flag:
                     axis.scatter([sensor.xd], [sensor.yd], s=140, c='r', edgecolors='k', marker=(5, 0),
                                  label='Głowa klastra')
-                    axis.text(sensor.xd, sensor.yd, round(sensor.E, 3))
+                    axis.text(sensor.xd, sensor.yd, round(sensor.id, 3))
                     c_flag = False
                 else:
                     axis.scatter([sensor.xd], [sensor.yd], s=140, c='r', edgecolors='k', marker=(5, 0))
-                    axis.text(sensor.xd, sensor.yd, round(sensor.E, 3))
+                    axis.text(sensor.xd, sensor.yd, round(sensor.id, 3))
                 # plot(Sensors(i).xd,Sensors(i).yd,'ko', 'MarkerSize', 5, 'MarkerFaceColor', 'r');
                 # pass  # todo: Plot here
         else:
