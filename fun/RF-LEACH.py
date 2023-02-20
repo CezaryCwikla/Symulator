@@ -52,8 +52,8 @@ class RFLEACH(FLEACHSimulation):
 
                 self.cluster_head_selection_phase(round_number, curr_sens)
                 self.no_of_ch = len(self.list_CH)  # Liczba głów klastrów
-
-                #plotter3.start(self.Sensors, self.model, round_number, 1, sens_fun)
+                # if round_number == 400 or round_number == self.model.rmax - 40 or round_number == self.model.rmax - 39 or round_number == self.model.rmax - 38 or round_number == self.model.rmax - 37:
+                #     plotter3.start(self.Sensors, self.model, round_number, 1, sens_fun)
                 self.steady_state_phase(curr_sens)
                 self.check_dead_num(round_number)
 
@@ -61,7 +61,6 @@ class RFLEACH(FLEACHSimulation):
                 if len(self.dead_num) >= self.n:
                     self.lastPeriod = round_number
                     print(f"all dead (dead={len(self.dead_num)}) in round {round_number}")
-                    break
                 # ######################################
                 # ############# STATISTICS #############
                 # ######################################

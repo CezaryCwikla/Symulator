@@ -41,7 +41,7 @@ class Model:
 
         ######################## PARAMETRY SYMULACJI #############################
         # maksymalna liczba rund
-        self.rmax = 400
+        self.rmax = 100
 
         # Rozmiar pakietu danych
         self.data_packet_len = 4000
@@ -50,7 +50,7 @@ class Model:
         self.hello_packet_len = 100
 
         # Liczba pakietów wysłanych w fazie stanu ustalonego
-        self.NumPacket = 10
+        self.NumPacket = 40
 
         # Zasieg radiowy
         self.RR = 0.5 * self.x * math.sqrt(2)
@@ -121,10 +121,10 @@ def create_sensors(model: Model):
         # odegłość do stacji bazowej
         sensor.dis2sb = math.sqrt(pow((sensor.xd - sensors[-1].xd), 2) + pow((sensor.yd - sensors[-1].yd), 2))
 
-    with open(r"C:\Users\Czarko\PycharmProjects\SymulatorRFLEACH\sensor_x.txt", "r") as f:
+    with open(r"C:\Users\Admin\Desktop\Symulator\sensor_x.txt", "r") as f:
         for i, line in enumerate(f):
             sensors[i - 1].xd = int(line.strip())
-    with open(r"C:\Users\Czarko\PycharmProjects\SymulatorRFLEACH\sensor_y.txt", "r") as f:
+    with open(r"C:\Users\Admin\Desktop\Symulator\sensor_y.txt", "r") as f:
         for i, line in enumerate(f):
             sensors[i - 1].yd = int(line.strip())
 

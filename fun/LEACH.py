@@ -1,4 +1,5 @@
 from math import *
+import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 import LEACH_basics
@@ -211,8 +212,8 @@ class LEACHSimulation:
             # ######################################################################
             # ############# Wyswietl stan sieci przed ustalonym stanem #############
             # ######################################################################
-            if round_number == 1 or round_number == self.model.rmax - 2:
-               plotter.start(self.Sensors, self.model, round_number)
+            # if round_number == 100 or round_number == self.model.rmax - 10:
+            #    plotter.start(self.Sensors, self.model, round_number)
 
             # #################################################
             # ############# faza stanu ustalonego #############
@@ -237,6 +238,8 @@ class LEACHSimulation:
     def plots(self):
         figure, axis = plt.subplots(3, 2, figsize=(10, 6), constrained_layout=True)
         a = list(range(len(self.SRP)))
+        axis[0, 0].xaxis.set_ticks(np.arange(0, 101, 20))
+        axis[0, 0].xaxis.set_ticklabels(np.arange(0, 101, 20).round(1))
         axis[0, 0].plot(a, self.SRP, label="Wysłane pakiety")
         axis[0, 0].plot(a, self.RRP, label="Odebrane pakiety")
         axis[0, 0].set_title("Liczba wysłanych i odebranych pakietów dotyczących routingu")
@@ -245,22 +248,29 @@ class LEACHSimulation:
         axis[0, 0].set_xlabel('Numer rundy')
         axis[0, 0].grid(True)
 
-        axis[0, 1].plot(a, self.SDP, label="Wysłane pakiety")
-        axis[0, 1].plot(a, self.RDP, label="Odebrane pakiety")
-        axis[0, 1].set_title("Liczba wysłanych i odebranych pakietów danych")
+        axis[0, 1].xaxis.set_ticks(np.arange(0, 101, 20))
+        axis[0, 1].xaxis.set_ticklabels(np.arange(0, 101, 20).round(1))
+        axis[0, 1].plot(a, self.SDP, label="Sent packets")
+        axis[0, 1].plot(a, self.RDP, label="Received packets")
+        axis[0, 1].set_title("Number of data packets sent and received")
         axis[0, 1].legend(loc='lower right', shadow=True)
-        axis[0, 1].set_ylabel('Liczba pakietów')
-        axis[0, 1].set_xlabel('Numer rundy')
+        axis[0, 1].set_ylabel('Number of data packets')
+        axis[0, 1].set_xlabel('Round number')
         axis[0, 1].grid(True)
         # plt.show()
 
+        axis[1, 0].xaxis.set_ticks(np.arange(0, 101, 20))
+        axis[1, 0].xaxis.set_ticklabels(np.arange(0, 101, 20).round(1))
         axis[1, 0].plot(a, self.sum_dead_nodes)
-        axis[1, 0].set_title("Sumaryczna liczba rozładowanych węzłów")
-        axis[1, 0].set_ylabel('Liczba rozładowanych węzłów')
-        axis[1, 0].set_xlabel('Numer rundy')
+        axis[1, 0].set_title("Total number of nodes discharged")
+        axis[1, 0].set_ylabel('Number of nodes discharged')
+        axis[1, 0].set_xlabel('Round number')
         axis[1, 0].grid(True)
         # plt.show()
 
+
+        axis[1, 1].xaxis.set_ticks(np.arange(0, 101, 20))
+        axis[1, 1].xaxis.set_ticklabels(np.arange(0, 101, 20).round(1))
         axis[1, 1].plot(a, self.ch_per_round)
         axis[1, 1].set_title("Liczba głów klastrów na rundę")
         axis[1, 1].set_ylabel('Liczba głów klastrów')
@@ -268,17 +278,23 @@ class LEACHSimulation:
         axis[1, 1].grid(True)
         # plt.show()
 
+
+        axis[2, 0].xaxis.set_ticks(np.arange(0, 101, 20))
+        axis[2, 0].xaxis.set_ticklabels(np.arange(0, 101, 20).round(1))
         axis[2, 0].plot(a, self.avg_energy_All_sensor)
-        axis[2, 0].set_title("Średnia energia węzłów na rundę")
-        axis[2, 0].set_ylabel('Energia')
-        axis[2, 0].set_xlabel('Numer rundy')
+        axis[2, 0].set_title("Average node energy per round")
+        axis[2, 0].set_ylabel('Energy')
+        axis[2, 0].set_xlabel('Round number')
         axis[2, 0].grid(True)
         # plt.show()
 
+
+        axis[2, 1].xaxis.set_ticks(np.arange(0, 101, 20))
+        axis[2, 1].xaxis.set_ticklabels(np.arange(0, 101, 20).round(1))
         axis[2, 1].plot(a, self.consumed_energy)
-        axis[2, 1].set_title("Całkowite zużycie energii na rundę")
-        axis[2, 1].set_ylabel('Energia')
-        axis[2, 1].set_xlabel('Numer rundy')
+        axis[2, 1].set_title("Total energy consumption per round")
+        axis[2, 1].set_ylabel('Energy')
+        axis[2, 1].set_xlabel('Round number')
         axis[2, 1].grid(True)
         plt.show()
         print(f"Pierwszy węzeł padł w rundzie {self.first_dead_in}")
@@ -480,7 +496,13 @@ class LEACHSimulation:
         print("self.RRP", self.RRP)
         print("self.SDP", self.SDP)
         print("self.RDP", self.RDP)
+        print("SDP - sumarycznie", sum(self.SDP))
+        print("RDP - sumarycznie", sum(self.RDP))
         print('----------------------------------------------')
+        a = 50
+        b = 75
+        c = 100
+
         # print('self.total_energy_dissipated', self.total_energy_dissipated)
         # print('self.AllSensorEnergy', self.AllSensorEnergy)
         print('self.sum_dead_nodes', self.sum_dead_nodes)
@@ -491,15 +513,15 @@ class LEACHSimulation:
         print('self.consumed_energy', self.consumed_energy)
         print('self.Enheraf', self.Enheraf)
         print('----------------------------------------------')
-        print(self.SRP[150], ",", self.SRP[175], ",", self.SRP[200])
-        print(self.RRP[150], ",", self.RRP[175], ",", self.RRP[200])
-        print(self.SDP[150], ",", self.SDP[175], ",", self.SDP[200])
-        print(self.RDP[150], ",", self.RDP[175], ",", self.RDP[200])
-        print(self.sum_dead_nodes[150], ",", self.sum_dead_nodes[175], ",", self.sum_dead_nodes[200])
-        print(self.ch_per_round[150], ",", self.ch_per_round[175], ",", self.ch_per_round[200])
+        print(self.SRP[a], ",", self.SRP[b], ",", self.SRP[c])
+        print(self.RRP[a], ",", self.RRP[b], ",", self.RRP[c])
+        print(self.SDP[a], ",", self.SDP[b], ",", self.SDP[c])
+        print(self.RDP[a], ",", self.RDP[b], ",", self.RDP[c])
+        print(self.sum_dead_nodes[a], ",", self.sum_dead_nodes[b], ",", self.sum_dead_nodes[c])
+        print(self.ch_per_round[a], ",", self.ch_per_round[b], ",", self.ch_per_round[c])
         #    print(self.alive_sensors[150], ",", self.alive_sensors[175], ",", self.alive_sensors[200])
-        print(self.sum_energy_left_all_nodes[150], ",", self.sum_energy_left_all_nodes[175], ",",
-              self.sum_energy_left_all_nodes[200])
+        print(self.sum_energy_left_all_nodes[a], ",", self.sum_energy_left_all_nodes[b], ",",
+              self.sum_energy_left_all_nodes[c])
         # #print(self.avg_energy_All_sensor[150], ",", self.avg_energy_All_sensor[175], ",",
         #       self.avg_energy_All_sensor[200])
-        print(self.consumed_energy[150], ",", self.consumed_energy[175], ",", self.consumed_energy[200])
+        print(self.consumed_energy[a], ",", self.consumed_energy[b], ",", self.consumed_energy[c])

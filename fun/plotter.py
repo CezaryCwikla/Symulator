@@ -13,7 +13,7 @@ def start(Sensors: [Sensor], myModel: Model, round_number):
     print()
 
     n = myModel.n
-    fig, axis = plt.subplots()
+    fig, axis = plt.subplots(figsize=(16, 10))
     axis.set_xlim(left=0, right=myModel.x)
     axis.set_ylim(bottom=0, top=myModel.y)
     deadNum = 0
@@ -27,7 +27,7 @@ def start(Sensors: [Sensor], myModel: Model, round_number):
                 yl = [sensor.yd, Sensors[sensor.MCH].yd]
                 axis.plot(xl, yl)
                 if n_flag:
-                    axis.scatter([sensor.xd], [sensor.yd], c='k', edgecolors='k', label='Węzły')
+                    axis.scatter([sensor.xd], [sensor.yd], c='k', edgecolors='k', label='Node')
                     axis.text(sensor.xd, sensor.yd, round(sensor.E,3))
                     n_flag = False
                 else:
@@ -39,7 +39,7 @@ def start(Sensors: [Sensor], myModel: Model, round_number):
             elif sensor.type == 'C':  # Sensors.type == 'C'
                 if c_flag:
                     axis.scatter([sensor.xd], [sensor.yd], s=140, c='r', edgecolors='k', marker=(5, 0),
-                                 label='Głowa klastra')
+                                 label='Head node')
                     axis.text(sensor.xd, sensor.yd, round(sensor.E, 3))
                     c_flag = False
                 else:
@@ -51,15 +51,15 @@ def start(Sensors: [Sensor], myModel: Model, round_number):
         else:
             deadNum += 1
             if d_flag:
-                axis.scatter([sensor.xd], [sensor.yd], c='w', edgecolors='k', marker='X', label='Wyczerpany')
+                axis.scatter([sensor.xd], [sensor.yd], c='w', edgecolors='k', marker='X', label='Dead node')
                 d_flag = False
             else:
                 axis.scatter([sensor.xd], [sensor.yd], c='w', edgecolors='k', marker='X')
     #         # plot(Sensors(i).xd,Sensors(i).yd,'ko', 'MarkerSize',5, 'MarkerFaceColor', 'w');
     #         pass  # todo: plot here
 
-    axis.scatter([Sensors[n].xd], [Sensors[n].yd], s=140, c='b', edgecolors='k', label="Stacja bazowa", marker='*')
-    plt.title('Wykres sieci dla LEACH \n Runda numer: %d' % round_number + '  Liczba wyczerpanych węzłów: %d ' % deadNum)
+    axis.scatter([Sensors[n].xd], [Sensors[n].yd], s=140, c='b', edgecolors='k', label="Head node", marker='*')
+    plt.title('Network diagram for the first proposed algorithm \n Round number: %d' % round_number + '  Number of dead nodes: %d ' % deadNum)
     plt.xlabel('X [m]')
     plt.ylabel('Y [m]')
     plt.legend(loc='upper right')
