@@ -221,20 +221,31 @@ class FLEACHSimulation:
         axis[0, 0].set_xlabel('Numer rundy')
         axis[0, 0].grid(True)
 
-
-        axis[0, 1].plot(a, self.SDP, label="Sent packets")
-        axis[0, 1].plot(a, self.RDP, label="Received packets")
+        self.SDP.pop(0)
+        self.RDP.pop(0)
+        list1 = self.SDP
+        list2 = np.max(np.array(list1).reshape(-1, 4), axis=1)
+        b = list(range(len(list2)))
+        list3 = self.RDP
+        list4 = np.max(np.array(list3).reshape(-1, 4), axis=1)
+        axis[0, 1].plot(b, list2, label="Sent packets")
+        axis[0, 1].plot(b, list4, label="Received packets")
         axis[0, 1].set_title("Number of data packets sent and received")
         axis[0, 1].legend(loc='lower right', shadow=True)
         axis[0, 1].set_ylabel('Number of data packets')
         axis[0, 1].set_xlabel('Round number')
         axis[0, 1].grid(True)
 
-        axis[1, 0].plot(a, self.sum_dead_nodes)
+
+        self.sum_dead_nodes.pop(0)
+        list1 = self.sum_dead_nodes
+        list2 = np.max(np.array(list1).reshape(-1, 4), axis=1)
+        axis[1, 0].plot(b, list2)
         axis[1, 0].set_title("Total number of nodes discharged")
         axis[1, 0].set_ylabel('Number of nodes discharged')
         axis[1, 0].set_xlabel('Round number')
         axis[1, 0].grid(True)
+
 
         axis[1, 1].plot(a, self.ch_per_round)
         axis[1, 1].set_title("Liczba głów klastrów na rundę")
@@ -242,14 +253,20 @@ class FLEACHSimulation:
         axis[1, 1].set_xlabel('Numer rundy')
         axis[1, 1].grid(True)
 
-        axis[2, 0].plot(a, self.avg_energy_All_sensor)
+        self.avg_energy_All_sensor.pop(0)
+        list1 = self.avg_energy_All_sensor
+        list2 = np.max(np.array(list1).reshape(-1, 4), axis=1)
+        axis[2, 0].plot(b, list2)
         axis[2, 0].set_title("Average node energy per round")
         axis[2, 0].set_ylabel('Energy')
         axis[2, 0].set_xlabel('Round number')
         axis[2, 0].grid(True)
         # plt.show()
 
-        axis[2, 1].plot(a, self.consumed_energy)
+        self.consumed_energy.pop(0)
+        list1 = self.consumed_energy
+        list2 = np.max(np.array(list1).reshape(-1, 4), axis=1)
+        axis[2, 1].plot(b, list2)
         axis[2, 1].set_title("Total energy consumption per round")
         axis[2, 1].set_ylabel('Energy')
         axis[2, 1].set_xlabel('Round number')
