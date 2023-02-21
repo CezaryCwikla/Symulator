@@ -59,9 +59,7 @@ def start(Sensors: [Sensor], myModel: Model, round_number):
     #         pass  # todo: plot here
 
     axis.scatter([Sensors[n].xd], [Sensors[n].yd], s=140, c='b', edgecolors='k', label="Head node", marker='*')
-    plt.title('Network diagram for the first proposed algorithm \n Round number: %d' % round_number + '  Number of dead nodes: %d ' % deadNum)
-    plt.xlabel('X [m]')
-    plt.ylabel('Y [m]')
+    plt.title('Network diagram for the LEACH algorithm \n Round number: %d' % round_number + '  Number of dead nodes: %d ' % deadNum)
     plt.legend(loc='upper right')
     plt.show()
 

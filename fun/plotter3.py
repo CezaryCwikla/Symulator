@@ -93,16 +93,19 @@ def start(Sensors: [Sensor], myModel: Model, round_number, wersja, curr_fun):
 
     axis.scatter([Sensors[n].xd], [Sensors[n].yd], s=140, c='b', edgecolors='k', label="Base", marker='*')
     if wersja == 1:
-        plt.title(
-            'Network diagram for the second proposed algorithm \n Round number: 90' + '  Number of dead nodes: %d ' % deadNum)
+        if round_number > 10:
+            plt.title(
+                'Network diagram for the second proposed algorithm \n Round number: 90' + '  Number of dead nodes: %d ' % deadNum)
+        elif round_number < 10:
+            plt.title(
+                'Network diagram for the second proposed algorithm \n Round number: 1' + '  Number of dead nodes: %d ' % deadNum)
+
     elif wersja == 2:
         plt.title(
             'Wykres sieci dla drugiego zaproponowanego algorytmu \n Runda numer: %d' % round_number + '  Liczba wyczerpanych węzłów: %d ' % deadNum)
     elif wersja == 3:
         plt.title(
             'Wykres sieci dla trzeciego zaproponowanego algorytmu \n Runda numer: %d' % round_number + '  Liczba wyczerpanych węzłów: %d ' % deadNum)
-    plt.xlabel('X [m]')
-    plt.ylabel('Y [m]')
     plt.legend(loc='upper right')
     plt.show()
 

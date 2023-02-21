@@ -8,6 +8,7 @@ import LEACH_select_ch
 import send_receive_packets
 import findReceiver
 import findSender
+import pandas
 import join_to_nearest_ch
 import plotter
 matplotlib.use('TkAgg')
@@ -212,14 +213,14 @@ class LEACHSimulation:
             # ######################################################################
             # ############# Wyswietl stan sieci przed ustalonym stanem #############
             # ######################################################################
-            # if round_number == 100 or round_number == self.model.rmax - 10:
-            #    plotter.start(self.Sensors, self.model, round_number)
+
 
             # #################################################
             # ############# faza stanu ustalonego #############
             # #################################################
             self.__steady_state_phase()
-
+            # if round_number == 100 or round_number == self.model.rmax - 10 or round_number == 1:
+            #    plotter.start(self.Sensors, self.model, round_number)
             #sprawdzanie czy jakis wezel padl
             self.__check_dead_num(round_number)
 
@@ -238,8 +239,6 @@ class LEACHSimulation:
     def plots(self):
         figure, axis = plt.subplots(3, 2, figsize=(10, 6), constrained_layout=True)
         a = list(range(len(self.SRP)))
-        axis[0, 0].xaxis.set_ticks(np.arange(0, 101, 20))
-        axis[0, 0].xaxis.set_ticklabels(np.arange(0, 101, 20).round(1))
         axis[0, 0].plot(a, self.SRP, label="Wysłane pakiety")
         axis[0, 0].plot(a, self.RRP, label="Odebrane pakiety")
         axis[0, 0].set_title("Liczba wysłanych i odebranych pakietów dotyczących routingu")
@@ -248,19 +247,17 @@ class LEACHSimulation:
         axis[0, 0].set_xlabel('Numer rundy')
         axis[0, 0].grid(True)
 
-        axis[0, 1].xaxis.set_ticks(np.arange(0, 101, 20))
-        axis[0, 1].xaxis.set_ticklabels(np.arange(0, 101, 20).round(1))
+        self.SDP[0] = self.SDP[1]
+        self.RDP[0] = self.RDP[1]
         axis[0, 1].plot(a, self.SDP, label="Sent packets")
         axis[0, 1].plot(a, self.RDP, label="Received packets")
         axis[0, 1].set_title("Number of data packets sent and received")
-        axis[0, 1].legend(loc='lower right', shadow=True)
+        axis[0, 1].legend(loc='lower left', shadow=True)
         axis[0, 1].set_ylabel('Number of data packets')
         axis[0, 1].set_xlabel('Round number')
         axis[0, 1].grid(True)
         # plt.show()
 
-        axis[1, 0].xaxis.set_ticks(np.arange(0, 101, 20))
-        axis[1, 0].xaxis.set_ticklabels(np.arange(0, 101, 20).round(1))
         axis[1, 0].plot(a, self.sum_dead_nodes)
         axis[1, 0].set_title("Total number of nodes discharged")
         axis[1, 0].set_ylabel('Number of nodes discharged')
@@ -268,9 +265,6 @@ class LEACHSimulation:
         axis[1, 0].grid(True)
         # plt.show()
 
-
-        axis[1, 1].xaxis.set_ticks(np.arange(0, 101, 20))
-        axis[1, 1].xaxis.set_ticklabels(np.arange(0, 101, 20).round(1))
         axis[1, 1].plot(a, self.ch_per_round)
         axis[1, 1].set_title("Liczba głów klastrów na rundę")
         axis[1, 1].set_ylabel('Liczba głów klastrów')
@@ -279,8 +273,6 @@ class LEACHSimulation:
         # plt.show()
 
 
-        axis[2, 0].xaxis.set_ticks(np.arange(0, 101, 20))
-        axis[2, 0].xaxis.set_ticklabels(np.arange(0, 101, 20).round(1))
         axis[2, 0].plot(a, self.avg_energy_All_sensor)
         axis[2, 0].set_title("Average node energy per round")
         axis[2, 0].set_ylabel('Energy')
@@ -288,9 +280,6 @@ class LEACHSimulation:
         axis[2, 0].grid(True)
         # plt.show()
 
-
-        axis[2, 1].xaxis.set_ticks(np.arange(0, 101, 20))
-        axis[2, 1].xaxis.set_ticklabels(np.arange(0, 101, 20).round(1))
         axis[2, 1].plot(a, self.consumed_energy)
         axis[2, 1].set_title("Total energy consumption per round")
         axis[2, 1].set_ylabel('Energy')
@@ -298,6 +287,9 @@ class LEACHSimulation:
         axis[2, 1].grid(True)
         plt.show()
         print(f"Pierwszy węzeł padł w rundzie {self.first_dead_in}")
+        df = pandas.DataFrame(list(zip(self.SDP, self.RDP, self.sum_dead_nodes, self.avg_energy_All_sensor, self.consumed_energy)),
+                                   columns =['SDP', 'RDP', 'Dead nodes', 'Average energy', 'Consumed Energy'])
+        df.to_csv('csvs\LEACH.csv')
 
 
     def cluster_head_selection_phase(self, round_number):

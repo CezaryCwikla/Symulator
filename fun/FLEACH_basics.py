@@ -91,10 +91,10 @@ def create_sensors(model: Model):
     # Jeden dodatkowy jako stacja bazowa
     sensors = [Sensor() for _ in range(n + 1)]
 
-    with open(r"C:\Users\Czarko\PycharmProjects\SymulatorRFLEACH\sensor_x.txt", "r") as f:
+    with open(r"C:\Users\Admin\Desktop\Symulator\sensor_x.txt", "r") as f:
         for i, line in enumerate(f):
             sensors[i - 1].xd = int(line.strip())
-    with open(r"C:\Users\Czarko\PycharmProjects\SymulatorRFLEACH\sensor_y.txt", "r") as f:
+    with open(r"C:\Users\Admin\Desktop\Symulator\sensor_y.txt", "r") as f:
         for i, line in enumerate(f):
             sensors[i - 1].yd = int(line.strip())
 
@@ -104,7 +104,6 @@ def create_sensors(model: Model):
     sensors[n].id = model.n
     sensors[n].type = 'S'
     sensors[n].Fun = random.sample(set(model.F), 4)
-
 
     for i, sensor in enumerate(sensors[:-1]):
         # Koordynaty
@@ -136,6 +135,6 @@ def create_sensors(model: Model):
         sensor.MCH = n
         # odegłość do stacji bazowej
         sensor.dis2sb = math.sqrt(pow((sensor.xd - sensors[-1].xd), 2) + pow((sensor.yd - sensors[-1].yd), 2))
-        sensor.Fun = random.sample(set(model.F), random.randint(4,4))
+        sensor.Fun = random.sample(set(model.F), random.randint(4, 4))
 
     return sensors

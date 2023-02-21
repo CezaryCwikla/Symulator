@@ -1,5 +1,6 @@
 from math import *
 import numpy as np
+import pandas
 import matplotlib
 import matplotlib.pyplot as plt
 import FLEACH_basics
@@ -224,14 +225,16 @@ class FLEACHSimulation:
         self.SDP.pop(0)
         self.RDP.pop(0)
         list1 = self.SDP
-        list2 = np.max(np.array(list1).reshape(-1, 4), axis=1)
-        b = list(range(len(list2)))
+        SDP = np.sum(np.array(list1).reshape(-1, 4), axis=1)
+        SDP = np.insert(SDP, 0, SDP[0], axis=0)
+        b = list(range(len(SDP)))
         list3 = self.RDP
-        list4 = np.max(np.array(list3).reshape(-1, 4), axis=1)
-        axis[0, 1].plot(b, list2, label="Sent packets")
-        axis[0, 1].plot(b, list4, label="Received packets")
+        RDP = np.sum(np.array(list3).reshape(-1, 4), axis=1)
+        RDP = np.insert(RDP, 0, RDP[0], axis=0)
+        axis[0, 1].plot(b, SDP, label="Sent packets")
+        axis[0, 1].plot(b, RDP, label="Received packets")
         axis[0, 1].set_title("Number of data packets sent and received")
-        axis[0, 1].legend(loc='lower right', shadow=True)
+        axis[0, 1].legend(loc='lower left', shadow=True)
         axis[0, 1].set_ylabel('Number of data packets')
         axis[0, 1].set_xlabel('Round number')
         axis[0, 1].grid(True)
@@ -239,13 +242,13 @@ class FLEACHSimulation:
 
         self.sum_dead_nodes.pop(0)
         list1 = self.sum_dead_nodes
-        list2 = np.max(np.array(list1).reshape(-1, 4), axis=1)
-        axis[1, 0].plot(b, list2)
+        sum_dead_nodes = np.max(np.array(list1).reshape(-1, 4), axis=1)
+        sum_dead_nodes = np.insert(sum_dead_nodes, 0, sum_dead_nodes[0], axis=0)
+        axis[1, 0].plot(b, sum_dead_nodes)
         axis[1, 0].set_title("Total number of nodes discharged")
         axis[1, 0].set_ylabel('Number of nodes discharged')
         axis[1, 0].set_xlabel('Round number')
         axis[1, 0].grid(True)
-
 
         axis[1, 1].plot(a, self.ch_per_round)
         axis[1, 1].set_title("Liczba głów klastrów na rundę")
@@ -255,8 +258,9 @@ class FLEACHSimulation:
 
         self.avg_energy_All_sensor.pop(0)
         list1 = self.avg_energy_All_sensor
-        list2 = np.max(np.array(list1).reshape(-1, 4), axis=1)
-        axis[2, 0].plot(b, list2)
+        avg_energy_All_sensor = np.average(np.array(list1).reshape(-1, 4), axis=1)
+        avg_energy_All_sensor = np.insert(avg_energy_All_sensor, 0, avg_energy_All_sensor[0], axis=0)
+        axis[2, 0].plot(b, avg_energy_All_sensor)
         axis[2, 0].set_title("Average node energy per round")
         axis[2, 0].set_ylabel('Energy')
         axis[2, 0].set_xlabel('Round number')
@@ -265,13 +269,19 @@ class FLEACHSimulation:
 
         self.consumed_energy.pop(0)
         list1 = self.consumed_energy
-        list2 = np.max(np.array(list1).reshape(-1, 4), axis=1)
-        axis[2, 1].plot(b, list2)
+        consumed_energy = np.max(np.array(list1).reshape(-1, 4), axis=1)
+        consumed_energy = np.insert(consumed_energy, 0, consumed_energy[0], axis=0)
+        axis[2, 1].plot(b, consumed_energy)
         axis[2, 1].set_title("Total energy consumption per round")
         axis[2, 1].set_ylabel('Energy')
         axis[2, 1].set_xlabel('Round number')
         axis[2, 1].grid(True)
         plt.show()
+        df = pandas.DataFrame(
+            list(zip(SDP, RDP, sum_dead_nodes, avg_energy_All_sensor, consumed_energy)),
+            columns=['SDP', 'RDP', 'Dead nodes', 'Average energy', 'Consumed Energy'])
+        df.to_csv('csvs\MFLEACH4.csv')
+
         print(f"Pierwszy węzeł padł w rundzie {self.first_dead_in}")
 
     def cluster_head_selection_phase(self, round_number):
