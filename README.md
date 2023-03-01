@@ -1,1 +1,1 @@
-Symulator bezprzewodowej sieci czujników Internetu Rzeczy.  
+Internet of Things wireless sensor network simulator.
